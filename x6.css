@@ -1,0 +1,494 @@
+/*
+===============================================================================
+  RAPID-STYLE NEON THEME (Light / Dark) — drop-in override
+  - Keeps map + JS intact
+  - Cyberpunk palette, glassmorphism, neon glows, transport colors
+  - Works with body.dark-mode toggle (also supports [data-theme="dark"])
+===============================================================================
+*/
+
+/* 0) FONTS & RESETS -------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  /* Base Typography & Radii */
+  --font-main: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  /* Light mode palette */
+  --lm-bg: #0f1220; /* keep page background slightly dark to blend with map shell */
+  --lm-surface: #ffffff;
+  --lm-surface-2: #f6f8fc;
+  --lm-text: #0f172a;
+  --lm-text-2: #475569;
+  --lm-border: #e6ebf2;
+
+  /* Primary accents (neon but readable) */
+  --lm-primary: #005ef5;              /* blue neon */
+  --lm-primary-2: #6ad7ff;            /* cyan glow */
+  --lm-accent-pink: #ff3aa5;          /* magenta neon */
+  --lm-accent-lime: #5eff7e;          /* lime neon */
+  --lm-accent-yellow: #ffd84e;        /* amber neon */
+  --lm-shadow: 0 10px 30px rgba(16, 24, 40, .12);
+
+  /* Dark mode palette */
+  --dm-bg: #0b0f1a;
+  --dm-surface: #12172a;
+  --dm-surface-2: #19203a;
+  --dm-text: #e5edff;
+  --dm-text-2: #a9b4d0;
+  --dm-border: #283049;
+
+  /* Dark accents */
+  --dm-primary: #38bdf8;              /* sky */
+  --dm-primary-2: #22d3ee;            /* cyan */
+  --dm-accent-pink: #f472b6;          /* pink */
+  --dm-accent-lime: #22ff89;          /* lime */
+  --dm-accent-yellow: #facc15;        /* amber */
+  --dm-shadow: 0 12px 36px rgba(2, 8, 23, .5);
+
+  /* Shared system tokens */
+  --focus: 0 0 0 3px color-mix(in srgb, var(--dm-primary-2) 45%, transparent);
+  --glass: rgba(255,255,255,.08);
+  --glass-2: rgba(255,255,255,.06);
+
+  /* Transport line colors (Rapid KL-ish; customize freely) */
+  --line-kjl: #ff375f;   /* Kelana Jaya - red/magenta */
+  --line-agl: #9be15d;   /* Ampang / Sri Petaling - lime */
+  --line-pyl: #ffd84e;   /* Putrajaya MRT - yellow */
+  --line-mrl: #2dd4bf;   /* Monorail - teal */
+  --line-bus: #60a5fa;   /* Bus - blue */
+
+  /* Status colors */
+  --ok: #10b981;
+  --warn: #f59e0b;
+  --err: #ef4444;
+}
+
+/* Prefer system dark if dev forgets to toggle */
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: dark; }
+}
+
+/* 1) GLOBAL BASE ----------------------------------------------------------- */
+html, body, #app {
+  font-family: var(--font-main) !important;
+  background: var(--lm-bg);
+  color: var(--lm-text);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.dark-mode, [data-theme="dark"] {
+  background: var(--dm-bg);
+  color: var(--dm-text);
+}
+
+/* Layout wrappers from the app */
+.main-panel, .page-body-wrapper, .navbar.default-layout,
+.navbar.default-layout .navbar-brand-wrapper, .content-wrapper {
+  background: transparent !important;
+}
+
+/* Panels / asides / cards become glassy with neon edges */
+.ui-aside, #plannerMenu, .card, .list-group-item, .dropdown-menu, .modal-content {
+  background: var(--lm-surface) !important;
+  color: var(--lm-text) !important;
+  border: 1px solid var(--lm-border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--lm-shadow) !important;
+  backdrop-filter: saturate(120%) blur(6px);
+}
+
+body.dark-mode .ui-aside, body.dark-mode #plannerMenu,
+body.dark-mode .card, body.dark-mode .list-group-item,
+body.dark-mode .dropdown-menu, body.dark-mode .modal-content {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--dm-surface) 92%, transparent), color-mix(in srgb, var(--dm-surface-2) 92%, transparent)) !important;
+  color: var(--dm-text) !important;
+  border-color: var(--dm-border) !important;
+  box-shadow: var(--dm-shadow) !important;
+}
+
+/* Section titles */
+h1,h2,h3,h4,.page-title,.pra-title{
+  color: var(--lm-text);
+  letter-spacing: .2px;
+}
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+body.dark-mode .page-title, body.dark-mode .pra-title{
+  color: var(--dm-text);
+}
+
+/* Neon divider under titles */
+.pra-title, .page-title {
+  padding-bottom: .6rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--lm-border);
+  position: relative;
+}
+.pra-title:after, .page-title:after{
+  content:"";
+  position:absolute; left:0; bottom:-1px; height:2px; width:120px;
+  background: linear-gradient(90deg, var(--lm-primary), transparent);
+}
+body.dark-mode .pra-title, body.dark-mode .page-title{ border-bottom-color: var(--dm-border); }
+body.dark-mode .pra-title:after, body.dark-mode .page-title:after{
+  background: linear-gradient(90deg, var(--dm-primary), transparent);
+}
+
+/* 2) FORMS & CONTROLS ------------------------------------------------------ */
+.form-control, .bootstrap-select > .dropdown-toggle, .input-group .form-control {
+  background: var(--lm-surface-2) !important;
+  color: var(--lm-text) !important;
+  border: 1px solid var(--lm-border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: none !important;
+  transition: border .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.form-control:focus, .bootstrap-select > .dropdown-toggle:focus, .form-control:focus-visible{
+  outline: none !important;
+  border-color: var(--lm-primary) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--lm-primary) 25%, transparent) !important;
+}
+body.dark-mode .form-control, body.dark-mode .bootstrap-select > .dropdown-toggle{
+  background: var(--dm-surface) !important;
+  color: var(--dm-text) !important;
+  border-color: var(--dm-border) !important;
+}
+body.dark-mode .form-control:focus, body.dark-mode .bootstrap-select > .dropdown-toggle:focus{
+  border-color: var(--dm-primary) !important;
+  box-shadow: var(--focus) !important;
+}
+
+/* Placeholder */
+::placeholder{ color: color-mix(in srgb, currentColor 55%, transparent); opacity:.8; }
+
+/* Search button & primary buttons */
+.btn, .btn-primary, .btn-secondary, .btn-outline, .btn-light, .btn-dark {
+  position: relative;
+  border-radius: 12px !important;
+  padding: .75rem 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .2px;
+  transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+  overflow: hidden;
+}
+
+/* Neon gradient border effect */
+.btn:before{
+  content:"";
+  position:absolute; inset:-2px;
+  border-radius: 14px;
+  padding:2px;
+  background: conic-gradient(from 180deg, var(--lm-primary), var(--lm-accent-pink), var(--lm-accent-lime), var(--lm-primary));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity:.0; transition:opacity .25s ease;
+}
+.btn:hover:before{ opacity:.4; }
+body.dark-mode .btn:before{
+  background: conic-gradient(from 180deg, var(--dm-primary), var(--dm-accent-pink), var(--dm-accent-lime), var(--dm-primary));
+}
+
+/* Variants */
+.btn-primary{
+  background: linear-gradient(180deg, var(--lm-primary), color-mix(in srgb, var(--lm-primary) 75%, black)) !important;
+  border-color: color-mix(in srgb, var(--lm-primary) 75%, black) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--lm-primary) 22%, transparent);
+}
+.btn-secondary{
+  background: var(--lm-surface) !important;
+  border-color: var(--lm-border) !important;
+  color: var(--lm-text) !important;
+}
+.btn:hover{ transform: translateY(-1px); }
+.btn:active{ transform: translateY(0); }
+
+/* Dark mode button overrides */
+body.dark-mode .btn-primary{
+  background: linear-gradient(180deg, color-mix(in srgb, var(--dm-primary) 85%, #000), color-mix(in srgb, var(--dm-primary) 65%, #000)) !important;
+  border-color: color-mix(in srgb, var(--dm-primary) 60%, #000) !important;
+  color:#081018 !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.3);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--dm-primary) 35%, transparent);
+}
+body.dark-mode .btn-secondary{
+  background: color-mix(in srgb, var(--dm-surface) 88%, transparent) !important;
+  border-color: var(--dm-border) !important;
+  color: var(--dm-text) !important;
+}
+
+/* Click ripple (CSS only) */
+.btn:after{
+  content:""; position:absolute; inset:auto; width:10px; height:10px; border-radius:50%;
+  opacity:0; transform: scale(1); background: currentColor; pointer-events:none;
+}
+.btn:active:after{
+  animation: ripple .5s ease-out forwards;
+}
+@keyframes ripple{
+  0%{ opacity:.35; transform: scale(1); }
+  100%{ opacity:0; transform: scale(20); }
+}
+
+/* Switchy tabs (Types/Modes) */
+.btn-group .btn, .nav-pills .nav-link{
+  background: var(--lm-surface-2) !important;
+  border: 1px solid var(--lm-border) !important;
+  color: var(--lm-text) !important;
+}
+.btn-group .btn.active, .nav-pills .nav-link.active{
+  background: linear-gradient(180deg, var(--lm-primary-2), var(--lm-primary)) !important;
+  border-color: var(--lm-primary) !important;
+  color:#fff !important;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--lm-primary) 28%, transparent);
+}
+body.dark-mode .btn-group .btn, body.dark-mode .nav-pills .nav-link{
+  background: var(--dm-surface) !important; border-color: var(--dm-border) !important; color: var(--dm-text) !important;
+}
+body.dark-mode .btn-group .btn.active, body.dark-mode .nav-pills .nav-link.active{
+  background: linear-gradient(180deg, var(--dm-primary-2), var(--dm-primary)) !important;
+  border-color: var(--dm-primary) !important; color: #081018 !important;
+}
+
+/* 3) RESULT CARDS / ITINERARY --------------------------------------------- */
+#results .card, .result-card, .trip-card {
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--lm-border) !important;
+  background: var(--lm-surface) !important;
+  overflow: hidden;
+}
+body.dark-mode #results .card, body.dark-mode .result-card, body.dark-mode .trip-card{
+  border-color: var(--dm-border) !important;
+  background: color-mix(in srgb, var(--dm-surface) 94%, transparent) !important;
+}
+
+/* Subtle hover lift + neon edge */
+#results .card:hover, .result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(2, 8, 23, .08), 0 0 0 1px color-mix(in srgb, var(--lm-primary) 18%, transparent);
+}
+body.dark-mode #results .card:hover, body.dark-mode .result-card:hover {
+  box-shadow: 0 18px 36px rgba(2, 8, 23, .5), 0 0 0 1px color-mix(in srgb, var(--dm-primary) 28%, transparent);
+}
+
+/* Card header: time + distance */
+.result-head, .trip-head, #results .card .card-header{
+  display:flex; align-items:center; gap:.75rem;
+  border: none !important;
+  padding: .85rem 1rem;
+  background: linear-gradient(180deg, var(--lm-surface-2), transparent);
+}
+body.dark-mode .result-head, body.dark-mode .trip-head, body.dark-mode #results .card .card-header{
+  background: linear-gradient(180deg, var(--dm-surface-2), transparent);
+}
+
+/* Badges */
+.badge, .chip {
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding: .3rem .55rem; border-radius: 999px;
+  font-weight: 600; font-size: .78rem; letter-spacing:.2px;
+  border: 1px solid var(--lm-border);
+  background: var(--lm-surface-2); color: var(--lm-text);
+}
+body.dark-mode .badge, body.dark-mode .chip{
+  border-color: var(--dm-border); background: var(--dm-surface); color: var(--dm-text);
+}
+
+/* Transport-specific chips */
+.chip--bus, [data-mode="bus"] .chip, .mode-bus .chip { background: color-mix(in srgb, var(--line-bus) 16%, var(--lm-surface-2)); border-color: color-mix(in srgb, var(--line-bus) 55%, var(--lm-border)); }
+.chip--kjl, [data-line*="KJL"] .chip, .mode-lrt-kjl .chip { background: color-mix(in srgb, var(--line-kjl) 16%, var(--lm-surface-2)); border-color: color-mix(in srgb, var(--line-kjl) 55%, var(--lm-border)); }
+.chip--agl, [data-line*="AGL"] .chip, .mode-lrt-agl .chip { background: color-mix(in srgb, var(--line-agl) 16%, var(--lm-surface-2)); border-color: color-mix(in srgb, var(--line-agl) 55%, var(--lm-border)); }
+.chip--pyl, [data-line*="PYL"] .chip, .mode-mrt-pyl .chip { background: color-mix(in srgb, var(--line-pyl) 16%, var(--lm-surface-2)); border-color: color-mix(in srgb, var(--line-pyl) 55%, var(--lm-border)); }
+.chip--mrl, [data-line*="MRL"] .chip, .mode-monorail .chip { background: color-mix(in srgb, var(--line-mrl) 16%, var(--lm-surface-2)); border-color: color-mix(in srgb, var(--line-mrl) 55%, var(--lm-border)); }
+body.dark-mode .chip--bus, body.dark-mode [data-mode="bus"] .chip, body.dark-mode .mode-bus .chip { background: color-mix(in srgb, var(--line-bus) 26%, var(--dm-surface)); border-color: color-mix(in srgb, var(--line-bus) 55%, var(--dm-border)); }
+body.dark-mode .chip--kjl, body.dark-mode [data-line*="KJL"] .chip, body.dark-mode .mode-lrt-kjl .chip { background: color-mix(in srgb, var(--line-kjl) 28%, var(--dm-surface)); border-color: color-mix(in srgb, var(--line-kjl) 55%, var(--dm-border)); }
+/* (and same idea for others; above two show pattern) */
+
+/* Timeline / steps inside a trip card */
+.route-steps, .trip-body { padding: .75rem 1rem 1rem; }
+.step {
+  display:grid; grid-template-columns: 36px 1fr; gap:.9rem; align-items:center;
+  padding:.55rem .25rem; border-radius: var(--radius-sm);
+}
+.step:hover{ background: color-mix(in srgb, var(--lm-surface-2) 60%, transparent); }
+body.dark-mode .step:hover{ background: color-mix(in srgb, var(--dm-surface-2) 60%, transparent); }
+
+/* Step icon circle */
+.step .ico, .step .icon{
+  width:36px; height:36px; border-radius:50%;
+  display:grid; place-items:center;
+  background: var(--lm-surface-2); border:1px solid var(--lm-border);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--lm-primary) 12%, transparent);
+}
+body.dark-mode .step .ico, body.dark-mode .step .icon{
+  background: var(--dm-surface); border-color: var(--dm-border);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--dm-primary) 18%, transparent);
+}
+
+/* Mini line color ring on icons (attribute or class detection) */
+.step[data-line*="KJL"] .ico, .mode-lrt-kjl .ico{ box-shadow: 0 0 0 2px var(--line-kjl), inset 0 0 0 2px color-mix(in srgb, var(--line-kjl) 35%, transparent); }
+.step[data-line*="AGL"] .ico, .mode-lrt-agl .ico{ box-shadow: 0 0 0 2px var(--line-agl), inset 0 0 0 2px color-mix(in srgb, var(--line-agl) 35%, transparent); }
+.step[data-line*="PYL"] .ico, .mode-mrt-pyl .ico{ box-shadow: 0 0 0 2px var(--line-pyl), inset 0 0 0 2px color-mix(in srgb, var(--line-pyl) 35%, transparent); }
+.step[data-mode="bus"] .ico, .mode-bus .ico{ box-shadow: 0 0 0 2px var(--line-bus), inset 0 0 0 2px color-mix(in srgb, var(--line-bus) 35%, transparent); }
+
+/* Inline meta (duration, distance) */
+.meta { display:flex; gap:1rem; flex-wrap:wrap; font-size:.86rem; color: var(--lm-text-2); }
+body.dark-mode .meta{ color: var(--dm-text-2); }
+
+/* CTA on each result (e.g., View details) */
+.result-actions, .trip-actions{ display:flex; gap:.5rem; justify-content:flex-end; padding:.5rem 1rem .9rem; }
+
+/* 4) TABLES (if any listings) --------------------------------------------- */
+table, .table{
+  width:100%;
+  border-collapse: separate; border-spacing:0;
+  border:1px solid var(--lm-border); border-radius: var(--radius-md); overflow:hidden;
+  background: var(--lm-surface);
+}
+.table thead th{
+  background: linear-gradient(180deg, var(--lm-surface-2), transparent);
+  color: var(--lm-text); font-weight:700; border-bottom:1px solid var(--lm-border);
+}
+.table tbody tr + tr td{ border-top:1px solid var(--lm-border); }
+.table tbody tr:hover{ background: color-mix(in srgb, var(--lm-surface-2) 55%, transparent); }
+body.dark-mode table, body.dark-mode .table{
+  border-color: var(--dm-border); background: var(--dm-surface);
+}
+body.dark-mode .table thead th{
+  background: linear-gradient(180deg, var(--dm-surface-2), transparent);
+  border-bottom-color: var(--dm-border); color: var(--dm-text);
+}
+body.dark-mode .table tbody tr + tr td{ border-top-color: var(--dm-border); }
+body.dark-mode .table tbody tr:hover{ background: color-mix(in srgb, var(--dm-surface-2) 60%, transparent); }
+
+/* 5) MAP & LEAFLET --------------------------------------------------------- */
+/* Map stays crisp; dark-mode uses invert trick for neutral tiles */
+.leaflet-tile-pane{ filter:none; transition: filter .35s ease; }
+body.dark-mode .leaflet-tile-pane{ filter: invert(1) hue-rotate(180deg) brightness(.92) contrast(.92); }
+
+.leaflet-bar a{
+  background: var(--lm-surface) !important; color: var(--lm-text) !important;
+  border:1px solid var(--lm-border) !important; border-radius: 8px !important;
+  transition: transform .1s ease, box-shadow .2s ease;
+}
+.leaflet-bar a:hover{ transform: translateY(-1px); box-shadow: 0 10px 16px rgba(2,8,23,.12); }
+body.dark-mode .leaflet-bar a{
+  background: var(--dm-surface) !important; color: var(--dm-text) !important; border-color: var(--dm-border) !important;
+  box-shadow: 0 12px 20px rgba(2,8,23,.5);
+}
+
+/* Popups */
+.leaflet-popup-content-wrapper, .leaflet-popup-tip{
+  background: var(--lm-surface); color: var(--lm-text);
+  border:1px solid var(--lm-border);
+  border-radius: 14px;
+  box-shadow: var(--lm-shadow);
+}
+body.dark-mode .leaflet-popup-content-wrapper, body.dark-mode .leaflet-popup-tip{
+  background: var(--dm-surface); color: var(--dm-text);
+  border-color: var(--dm-border); box-shadow: var(--dm-shadow);
+}
+
+/* Popup header if present */
+.leaflet-popup-content .popup-header{
+  display:flex; align-items:center; gap:.6rem;
+  margin:-.5rem -0.5rem .5rem; padding:.6rem .8rem;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--lm-primary), var(--lm-primary-2));
+  color:#fff;
+}
+body.dark-mode .leaflet-popup-content .popup-header{
+  background: linear-gradient(90deg, var(--dm-primary), var(--dm-primary-2)); color:#081018;
+}
+
+/* Route polylines hint glow (if you render with CSS classes) */
+.leaflet-overlay-pane .route-line { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--dm-primary) 45%, transparent)); }
+.leaflet-overlay-pane .route-line.kjl { stroke: var(--line-kjl) !important; }
+.leaflet-overlay-pane .route-line.agl { stroke: var(--line-agl) !important; }
+.leaflet-overlay-pane .route-line.pyl { stroke: var(--line-pyl) !important; }
+.leaflet-overlay-pane .route-line.mrl { stroke: var(--line-mrl) !important; }
+.leaflet-overlay-pane .route-line.bus { stroke: var(--line-bus) !important; }
+
+/* 6) THEME TOGGLE BUTTON --------------------------------------------------- */
+#theme-toggle{
+  position: fixed; right: 22px; bottom: 22px; width: 52px; height: 52px;
+  display:grid; place-items:center; z-index: 10000;
+  border-radius: 50%;
+  border: 1px solid var(--lm-border);
+  background: radial-gradient(120px 120px at 20% 20%, color-mix(in srgb, var(--lm-primary) 10%, transparent), transparent 45%),
+              var(--lm-surface);
+  color: var(--lm-text);
+  box-shadow: 0 10px 18px rgba(2,8,23,.16);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+}
+#theme-toggle:hover{ transform: translateY(-2px) rotate(6deg); box-shadow: 0 18px 30px rgba(2,8,23,.18); }
+body.dark-mode #theme-toggle{
+  background: radial-gradient(120px 120px at 20% 20%, color-mix(in srgb, var(--dm-primary) 16%, transparent), transparent 45%),
+              var(--dm-surface);
+  border-color: var(--dm-border); color: var(--dm-text); box-shadow: 0 14px 24px rgba(2,8,23,.6);
+}
+
+/* 7) CHIPS FOR DEPARTURE/ARRIVAL TIMES ------------------------------------ */
+.time-pill{
+  font-family: var(--font-mono);
+  font-weight:600; font-size:.9rem;
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.35rem .6rem; border-radius: 999px;
+  background: var(--lm-surface-2); border:1px solid var(--lm-border);
+}
+body.dark-mode .time-pill{ background: var(--dm-surface); border-color: var(--dm-border); }
+
+/* 8) SCROLLBARS ------------------------------------------------------------ */
+*{ scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--dm-primary) 35%, var(--dm-border)) transparent; }
+*::-webkit-scrollbar{ height:10px; width:10px; }
+*::-webkit-scrollbar-thumb{
+  border-radius: 999px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--dm-primary) 55%, var(--lm-primary-2)), color-mix(in srgb, var(--dm-primary) 25%, var(--lm-primary)));
+}
+*::-webkit-scrollbar-track{ background: transparent; }
+
+/* 9) TOOLTIPS / DROPDOWNS -------------------------------------------------- */
+.tooltip-inner, .dropdown-menu{
+  border-radius: 10px !important;
+  border: 1px solid var(--lm-border) !important;
+  background: var(--lm-surface) !important; color: var(--lm-text) !important;
+}
+body.dark-mode .tooltip-inner, body.dark-mode .dropdown-menu{
+  border-color: var(--dm-border) !important;
+  background: var(--dm-surface) !important; color: var(--dm-text) !important;
+}
+
+/* 10) STATUS TAGS ---------------------------------------------------------- */
+.tag-ok{ color: var(--ok); }
+.tag-warn{ color: var(--warn); }
+.tag-err{ color: var(--err); }
+
+/* 11) UTILITY HELPERS ------------------------------------------------------ */
+.glow {
+  box-shadow: 0 0 24px color-mix(in srgb, var(--lm-primary) 22%, transparent);
+}
+body.dark-mode .glow{
+  box-shadow: 0 0 28px color-mix(in srgb, var(--dm-primary) 35%, transparent);
+}
+.neon-text{ text-shadow: 0 0 10px color-mix(in srgb, currentColor 45%, transparent); }
+
+.grid { display:grid; gap: .8rem; }
+.flex { display:flex; gap:.8rem; align-items:center; }
+.justify-between{ justify-content:space-between; }
+.round-lg{ border-radius: var(--radius-lg); }
+
+/* 12) SAFETY: keep anchor color readable ---------------------------------- */
+a{ color: var(--lm-primary); text-decoration: none; }
+a:hover{ text-decoration: underline; }
+body.dark-mode a{ color: var(--dm-primary); }
+
+/* 13) ORIGINAL “DEFAULTS” (kept for compatibility) ------------------------ */
+.navbar.default-layout{ border-bottom: 1px solid var(--lm-border); }
+body.dark-mode .navbar.default-layout{ border-bottom-color: var(--dm-border); }
+.ui-aside{ box-shadow:none !important; border-right:1px solid var(--lm-border) !important; }
+body.dark-mode .ui-aside{ border-right-color: var(--dm-border) !important; }
