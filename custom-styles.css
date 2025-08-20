@@ -1,0 +1,253 @@
+/*
+================================================================================
+ CYBERPUNK THEME for RapidKL Journey Planner
+================================================================================
+*/
+
+/* 1. FONT & ROOT VARIABLES */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700'); /* Keep Poppins as a fallback */
+
+:root {
+  --cyber-bg: #0a041f;
+  --cyber-primary-glow: #00ffff; /* Cyan */
+  --cyber-secondary-glow: #ff00ff; /* Magenta */
+  --cyber-accent-glow: #fcee0a;   /* Electric Yellow */
+  --cyber-text: #e1e1e1;
+  --cyber-border: rgba(0, 255, 255, 0.5);
+  --cyber-border-accent: rgba(255, 0, 255, 0.7);
+  --font-cyber: 'Orbitron', sans-serif;
+  --font-sans: 'Poppins', sans-serif;
+}
+
+/* 2. CORE & LAYOUT STYLES */
+
+body, #app {
+  font-family: var(--font-cyber);
+  background-color: var(--cyber-bg);
+  color: var(--cyber-text);
+  overflow: hidden; /* Prevent scrollbars from messing with the scanlines */
+}
+
+/* Scanlines Overlay */
+body::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.5) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  z-index: 9999;
+  pointer-events: none;
+  animation: scanlines 10s linear infinite;
+}
+
+/* Remove original white/light backgrounds */
+.content-wrapper, .card, .ui-aside, .bg-white {
+  background: transparent !important;
+  color: var(--cyber-text);
+  border: none !important;
+}
+
+.main-panel, .page-body-wrapper {
+  background: var(--cyber-bg) !important;
+}
+
+/* 3. ANIMATIONS */
+
+@keyframes text-flicker {
+  0% { text-shadow: 0 0 5px var(--cyber-primary-glow), 0 0 10px var(--cyber-secondary-glow); }
+  30% { text-shadow: 0 0 7px var(--cyber-primary-glow), 0 0 12px var(--cyber-secondary-glow); }
+  50% { text-shadow: 0 0 5px var(--cyber-primary-glow), 0 0 15px var(--cyber-secondary-glow); }
+  70% { text-shadow: 0 0 10px var(--cyber-primary-glow), 0 0 12px var(--cyber-secondary-glow); }
+  100% { text-shadow: 0 0 5px var(--cyber-primary-glow), 0 0 10px var(--cyber-secondary-glow); }
+}
+
+@keyframes glitch {
+  2%, 64% { transform: translate(2px, 0) skew(0deg); }
+  4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+  62% { transform: translate(0, 0) skew(5deg); }
+}
+
+@keyframes scanlines {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+/* 4. TYPOGRAPHY & HEADERS */
+
+.page-title, h1, h2, h3, h4, .pra-title {
+  font-family: var(--font-cyber) !important;
+  color: var(--cyber-primary-glow) !important;
+  animation: text-flicker 1.5s infinite alternate;
+  text-transform: uppercase;
+}
+
+.pra-title {
+    background: var(--cyber-bg) !important;
+    border-bottom: 1px solid var(--cyber-border-accent);
+    padding: 1.5rem !important;
+}
+
+p, label, span, div, .dropdown-item {
+  font-family: var(--font-sans);
+  color: var(--cyber-text);
+}
+
+a {
+  color: var(--cyber-primary-glow);
+  transition: all 0.2s ease-in-out;
+}
+a:hover {
+  color: var(--cyber-secondary-glow);
+  text-shadow: 0 0 5px var(--cyber-secondary-glow);
+}
+
+
+/* 5. NAVIGATION & UI ASIDE */
+
+.navbar.default-layout {
+  background: var(--cyber-bg) !important;
+  border-bottom: 1px solid var(--cyber-border);
+}
+.navbar.default-layout .navbar-brand-wrapper {
+  background: transparent !important;
+}
+.navbar.default-layout .navbar-brand-wrapper .navbar-brand img {
+  filter: brightness(0) invert(1) drop-shadow(0 0 5px var(--cyber-primary-glow));
+}
+
+.ui-aside {
+  border-right: 1px solid var(--cyber-border-accent) !important;
+}
+
+#plannerMenu {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cyber-secondary-glow) var(--cyber-bg);
+}
+#plannerMenu::-webkit-scrollbar {
+  width: 8px;
+}
+#plannerMenu::-webkit-scrollbar-track {
+  background: var(--cyber-bg);
+}
+#plannerMenu::-webkit-scrollbar-thumb {
+  background-color: var(--cyber-secondary-glow);
+  border-radius: 0;
+  border: 1px solid var(--cyber-border-accent);
+}
+
+/* 6. FORMS & INPUTS */
+
+.form-control, .form-control:focus, .bootstrap-select > .dropdown-toggle {
+  background: rgba(0, 255, 255, 0.05) !important;
+  border: 1px solid var(--cyber-border) !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) inset !important;
+  font-family: var(--font-sans);
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .bootstrap-select > .dropdown-toggle:focus {
+  border-color: var(--cyber-secondary-glow) !important;
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.5) inset, 0 0 10px rgba(255, 0, 255, 0.3) !important;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.bootstrap-select .dropdown-menu {
+  background-color: var(--cyber-bg) !important;
+  border: 1px solid var(--cyber-border-accent) !important;
+  border-radius: 0 !important;
+}
+.bootstrap-select .dropdown-menu li a {
+  color: var(--cyber-text) !important;
+}
+.bootstrap-select .dropdown-menu li.selected a, .bootstrap-select .dropdown-menu li a:hover {
+  background: rgba(255, 0, 255, 0.2) !important;
+  color: var(--cyber-accent-glow) !important;
+}
+
+
+/* 7. BUTTONS */
+.btn {
+  border-radius: 0 !important;
+  font-family: var(--font-cyber);
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary, .pra-btn-grp .btn-primary {
+  background: transparent !important;
+  color: var(--cyber-primary-glow) !important;
+  border-color: var(--cyber-primary-glow) !important;
+  box-shadow: 0 0 5px var(--cyber-primary-glow) inset, 0 0 5px var(--cyber-primary-glow);
+}
+.btn-primary:hover, .pra-btn-grp .btn-primary:hover {
+  background: var(--cyber-primary-glow) !important;
+  color: var(--cyber-bg) !important;
+  box-shadow: 0 0 15px var(--cyber-primary-glow) inset, 0 0 15px var(--cyber-primary-glow);
+}
+
+.btn-secondary {
+  background: transparent !important;
+  color: var(--cyber-secondary-glow) !important;
+  border-color: var(--cyber-secondary-glow) !important;
+  box-shadow: 0 0 5px var(--cyber-secondary-glow) inset, 0 0 5px var(--cyber-secondary-glow);
+}
+.btn-secondary:hover {
+  background: var(--cyber-secondary-glow) !important;
+  color: var(--cyber-bg) !important;
+  box-shadow: 0 0 15px var(--cyber-secondary-glow) inset, 0 0 15px var(--cyber-secondary-glow);
+}
+
+/* 8. MAP & LEAFLET STYLES */
+
+/* Dark Mode Map Tiles */
+.leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: rgba(10, 4, 31, 0.9) !important;
+  color: var(--cyber-text) !important;
+  border: 1px solid var(--cyber-border) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5) !important;
+  border-radius: 0 !important;
+}
+.leaflet-popup-content-wrapper .popup-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--cyber-border-accent);
+}
+.leaflet-popup-content-wrapper .popup-header-title {
+    color: var(--cyber-primary-glow) !important;
+    animation: text-flicker 1.5s infinite alternate;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--cyber-secondary-glow) !important;
+}
+
+/* Custom Marker Icon */
+.leaflet-marker-icon {
+  filter: drop-shadow(0 0 3px var(--cyber-primary-glow));
+}
+
+/* Route Line Style */
+.leaflet-overlay-pane path {
+    stroke: var(--cyber-accent-glow) !important;
+    stroke-width: 5 !important;
+    stroke-opacity: 0.9 !important;
+    filter: drop-shadow(0 0 5px var(--cyber-accent-glow));
+}
