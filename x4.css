@@ -1,0 +1,134 @@
+/*
+================================================================================
+  FINAL OVERRIDE THEME (Light/Dark Modes)
+  Description: This stylesheet is designed to OVERRIDE the original site's CSS,
+               not replace it. This ensures the map and all JS functions work correctly.
+================================================================================
+*/
+
+/* 1. FONT IMPORTS & ROOT VARIABLES
+--------------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
+
+:root {
+  --font-main: 'Poppins', sans-serif;
+  --lm-bg: #f4f7fa;
+  --lm-surface: #ffffff;
+  --lm-text-primary: #1a202c;
+  --lm-text-secondary: #5a667d;
+  --lm-primary: #007bff;
+  --lm-secondary: #6c757d;
+  --lm-border: #dee2e6;
+  --dm-bg: #131725;
+  --dm-surface: #1f2537;
+  --dm-text-primary: #e2e8f0;
+  --dm-text-secondary: #a0aec0;
+  --dm-primary: #38b2ac;
+  --dm-secondary: #4a5568;
+  --dm-border: #4a5568;
+}
+
+/* 2. GENERAL OVERRIDE STYLES
+--------------------------------------------------------------------------------*/
+body, #app {
+  font-family: var(--font-main) !important;
+  background-color: var(--lm-bg);
+  color: var(--lm-text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.main-panel, .page-body-wrapper, .navbar.default-layout, 
+.navbar.default-layout .navbar-brand-wrapper, .content-wrapper {
+  background: var(--lm-bg) !important;
+}
+
+.ui-aside, .card, #plannerMenu {
+  background: var(--lm-surface) !important;
+  color: var(--lm-text-primary) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+}
+
+.ui-aside { box-shadow: none !important; border-right: 1px solid var(--lm-border) !important; }
+.navbar.default-layout { border-bottom: 1px solid var(--lm-border); }
+
+h1, h2, h3, h4, h5, h6, .page-title, .pra-title { color: var(--lm-text-primary) !important; }
+p, label, span, div, .dropdown-item { color: var(--lm-text-secondary); }
+.pra-title { background: var(--lm-surface) !important; border-bottom: 1px solid var(--lm-border); }
+
+a { color: var(--lm-primary); }
+.form-control, .bootstrap-select > .dropdown-toggle {
+  background: var(--lm-bg) !important;
+  border-color: var(--lm-border) !important;
+  color: var(--lm-text-primary) !important;
+}
+.btn-primary { background-color: var(--lm-primary) !important; border-color: var(--lm-primary) !important; color: white !important; }
+.btn-secondary { background-color: var(--lm-secondary) !important; border-color: var(--lm-secondary) !important; color: white !important; }
+
+/* Map & Popups Light Mode */
+.leaflet-tile-pane { filter: none; transition: filter 0.5s ease; }
+.leaflet-popup-content-wrapper { background: var(--lm-surface); color: var(--lm-text-primary); }
+.leaflet-popup-content-wrapper .popup-header { background: var(--lm-primary) !important; }
+.leaflet-popup-content-wrapper .popup-header .popup-header-title { color: white !important; }
+
+/* 3. DARK MODE OVERRIDES
+--------------------------------------------------------------------------------*/
+body.dark-mode { background-color: var(--dm-bg); color: var(--dm-text-primary); }
+
+body.dark-mode .main-panel, body.dark-mode .page-body-wrapper, body.dark-mode .navbar.default-layout,
+body.dark-mode .navbar.default-layout .navbar-brand-wrapper, body.dark-mode .content-wrapper {
+  background: var(--dm-bg) !important;
+}
+
+body.dark-mode .ui-aside, body.dark-mode .card, body.dark-mode #plannerMenu {
+  background: var(--dm-surface) !important;
+  color: var(--dm-text-primary) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+}
+
+body.dark-mode .ui-aside { border-right-color: var(--dm-border) !important; box-shadow: none !important; }
+body.dark-mode .navbar.default-layout { border-bottom-color: var(--dm-border); }
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode .page-title, body.dark-mode .pra-title {
+  color: var(--dm-text-primary) !important;
+}
+body.dark-mode p, body.dark-mode label, body.dark-mode span, body.dark-mode div, body.dark-mode .dropdown-item {
+  color: var(--dm-text-secondary);
+}
+
+body.dark-mode a { color: var(--dm-primary); }
+body.dark-mode .pra-title { background: var(--dm-surface) !important; border-bottom: 1px solid var(--dm-border); }
+
+body.dark-mode .form-control, body.dark-mode .bootstrap-select > .dropdown-toggle {
+  background: var(--dm-bg) !important;
+  border-color: var(--dm-border) !important;
+  color: var(--dm-text-primary) !important;
+}
+
+body.dark-mode .btn-primary { background-color: var(--dm-primary) !important; border-color: var(--dm-primary) !important; color: #131725 !important; }
+body.dark-mode .btn-secondary { background-color: var(--dm-secondary) !important; border-color: var(--dm-secondary) !important; color: var(--dm-text-primary) !important; }
+
+/* Dark Mode Map & Popups */
+body.dark-mode .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9); }
+body.dark-mode .leaflet-popup-content-wrapper, body.dark-mode .leaflet-popup-tip { background: var(--dm-surface); color: var(--dm-text-primary); }
+body.dark-mode .leaflet-popup-content-wrapper .popup-header { background: var(--dm-primary) !important; }
+body.dark-mode .leaflet-popup-content-wrapper .popup-header .popup-header-title { color: #131725 !important; }
+body.dark-mode .leaflet-bar a { background-color: var(--dm-surface); border-color: var(--dm-border); color: var(--dm-text-primary); }
+
+/* 4. THEME TOGGLE BUTTON
+--------------------------------------------------------------------------------*/
+#theme-toggle {
+  position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px;
+  border-radius: 50%; font-size: 24px; cursor: pointer; z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s ease;
+}
+#theme-toggle {
+  border: 1px solid var(--lm-border); background-color: var(--lm-surface);
+  color: var(--lm-text-primary); box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+#theme-toggle:hover { transform: scale(1.1) rotate(15deg); }
+body.dark-mode #theme-toggle {
+  background-color: var(--dm-surface); border-color: var(--dm-border);
+  color: var(--dm-text-primary);
+}
