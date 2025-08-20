@@ -1,0 +1,160 @@
+/*
+================================================================================
+ DUAL-THEME STYLESHEET (Light & Cyberpunk Dark)
+================================================================================
+*/
+
+/* 1. FONT IMPORTS & ROOT VARIABLES */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
+
+:root {
+  /* Shared Variables */
+  --font-cyber: 'Orbitron', sans-serif;
+  --font-sans: 'Poppins', sans-serif;
+
+  /* Light Mode Variables */
+  --lm-bg: #f3f4fa;
+  --lm-surface: #ffffff;
+  --lm-text: #212529;
+  --lm-primary: #007bff;
+  --lm-border: #dde4eb;
+
+  /* Dark Mode (Cyberpunk) Variables */
+  --dm-bg: #0a041f;
+  --dm-primary-glow: #00ffff; /* Cyan */
+  --dm-secondary-glow: #ff00ff; /* Magenta */
+  --dm-accent-glow: #fcee0a;   /* Electric Yellow */
+  --dm-text: #e1e1e1;
+  --dm-border: rgba(0, 255, 255, 0.5);
+  --dm-border-accent: rgba(255, 0, 255, 0.7);
+}
+
+/* 2. BASE & LIGHT MODE STYLES */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--lm-bg);
+  color: var(--lm-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.main-panel, .page-body-wrapper {
+  background: var(--lm-bg) !important;
+}
+
+.content-wrapper, .card, .ui-aside, .bg-white, .leaflet-popup-content-wrapper {
+  background: var(--lm-surface) !important;
+  color: var(--lm-text);
+  border: 1px solid var(--lm-border) !important;
+  border-radius: 4px;
+}
+
+.pra-title { color: var(--lm-primary) !important; background: var(--lm-surface) !important; }
+.page-title, h1, h2, h3, h4 { color: var(--lm-text) !important; }
+a { color: var(--lm-primary); }
+
+.form-control, .bootstrap-select > .dropdown-toggle {
+  background: var(--lm-surface) !important;
+  border: 1px solid #ced4da !important;
+  color: var(--lm-text) !important;
+  border-radius: 4px !important;
+}
+.btn-primary { background-color: var(--lm-primary) !important; border-color: var(--lm-primary) !important; color: white !important; }
+.btn-secondary { background-color: #6c757d !important; border-color: #6c757d !important; color: white !important; }
+
+/* Light Mode Map */
+.leaflet-tile-pane {
+  filter: none;
+  transition: filter 0.5s ease;
+}
+.leaflet-popup-content-wrapper .popup-header { background: var(--lm-primary) !important; }
+.leaflet-popup-content-wrapper .popup-header .popup-header-title { color: white !important; }
+
+/* 3. DARK MODE (CYBERPUNK) STYLES */
+body.dark-mode {
+  font-family: var(--font-cyber);
+  background-color: var(--dm-bg);
+  color: var(--dm-text);
+}
+body.dark-mode::after {
+  content: " "; display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5) 1px, transparent 1px, transparent 2px);
+  z-index: 9999; pointer-events: none; animation: scanlines 10s linear infinite;
+}
+
+body.dark-mode .main-panel, body.dark-mode .page-body-wrapper { background: var(--dm-bg) !important; }
+
+body.dark-mode .content-wrapper, body.dark-mode .card, body.dark-mode .ui-aside {
+  background: transparent !important;
+  color: var(--dm-text);
+  border: none !important;
+}
+body.dark-mode .ui-aside { border-right: 1px solid var(--dm-border-accent) !important; }
+
+body.dark-mode .page-title, body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode .pra-title {
+  color: var(--dm-primary-glow) !important;
+  animation: text-flicker 1.5s infinite alternate;
+  text-transform: uppercase;
+}
+body.dark-mode .pra-title { background: transparent !important; border-bottom: 1px solid var(--dm-border-accent); padding: 1.5rem !important; }
+body.dark-mode p, body.dark-mode label, body.dark-mode span, body.dark-mode div, body.dark-mode .dropdown-item { color: var(--dm-text); font-family: var(--font-sans); }
+body.dark-mode a { color: var(--dm-primary-glow); }
+body.dark-mode a:hover { color: var(--dm-secondary-glow); text-shadow: 0 0 5px var(--dm-secondary-glow); }
+
+body.dark-mode .form-control, body.dark-mode .form-control:focus, body.dark-mode .bootstrap-select > .dropdown-toggle {
+  background: rgba(0, 255, 255, 0.05) !important; border: 1px solid var(--dm-border) !important;
+  color: #fff !important; border-radius: 0 !important;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) inset !important;
+}
+
+body.dark-mode .btn { border-radius: 0 !important; font-family: var(--font-cyber); text-transform: uppercase; }
+body.dark-mode .btn-primary {
+  background: transparent !important; color: var(--dm-primary-glow) !important; border-color: var(--dm-primary-glow) !important;
+  box-shadow: 0 0 5px var(--dm-primary-glow) inset, 0 0 5px var(--dm-primary-glow);
+}
+
+/* Dark Mode Map */
+body.dark-mode .leaflet-tile-pane { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }
+body.dark-mode .leaflet-popup-content-wrapper {
+  background: rgba(10, 4, 31, 0.9) !important; border: 1px solid var(--dm-border) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5) !important; border-radius: 0 !important;
+}
+body.dark-mode .leaflet-popup-content-wrapper .popup-header { background: transparent !important; border-bottom: 1px solid var(--dm-border-accent); }
+body.dark-mode .leaflet-popup-content-wrapper .popup-header .popup-header-title { color: var(--dm-primary-glow) !important; animation: text-flicker 1.5s infinite alternate; }
+
+/* 4. THEME TOGGLE BUTTON STYLES (Applies to both modes) */
+#theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--lm-primary);
+  background-color: var(--lm-surface);
+  color: var(--lm-text);
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+#theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+body.dark-mode #theme-toggle {
+  background-color: var(--dm-bg);
+  border-color: var(--dm-secondary-glow);
+  color: var(--dm-secondary-glow);
+  box-shadow: 0 0 15px var(--dm-secondary-glow);
+}
+
+/* 5. ANIMATIONS (Used by Dark Mode) */
+@keyframes text-flicker {
+  0% { text-shadow: 0 0 5px var(--dm-primary-glow), 0 0 10px var(--dm-secondary-glow); } 50% { text-shadow: 0 0 10px var(--dm-primary-glow), 0 0 15px var(--dm-secondary-glow); } 100% { text-shadow: 0 0 5px var(--dm-primary-glow), 0 0 10px var(--dm-secondary-glow); }
+}
+@keyframes scanlines { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
