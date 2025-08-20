@@ -1,0 +1,223 @@
+/*
+================================================================================
+  CYBER-TRANSIT UI THEME (v2.0)
+  Description: A complete UI overhaul combining original layout rules with a
+               polished, futuristic aesthetic and transit-line color integration.
+               Designed for a "full replacement" worker setup.
+================================================================================
+*/
+
+/* 1. FONT IMPORTS & ROOT VARIABLES
+--------------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:400,500&display=swap');
+
+:root {
+  /* Fonts */
+  --font-header: 'Orbitron', sans-serif;
+  --font-body: 'Poppins', sans-serif;
+
+  /* Transit Line Colors (Official Branding) */
+  --line-lrt-kj: #ef4183; /* Kelana Jaya Line - Pink */
+  --line-lrt-ag: #f47920; /* Ampang Line - Orange */
+  --line-mrt-kg: #009945; /* Kajang Line - Green */
+  --line-mono-kl: #98ce44; /* Monorail - Lime Green */
+  --line-brt-sw: #0077c8; /* BRT Sunway - Blue */
+  --line-ktm: #0032a0;    /* KTM Komuter - Dark Blue */
+  --line-walk: #888888;   /* Walking - Gray */
+  
+  /* --- Light Mode (Daylight Grid) --- */
+  --lm-bg: #eef2f5;
+  --lm-surface: #ffffff;
+  --lm-text-primary: #1a202c;
+  --lm-text-secondary: #5a667d;
+  --lm-primary: #0052d4;
+  --lm-border: #d4dde5;
+  --lm-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* --- Dark Mode (Neon Nocturne) --- */
+  --dm-bg: #0d1117;
+  --dm-surface: #161b22;
+  --dm-text-primary: #c9d1d9;
+  --dm-text-secondary: #8b949e;
+  --dm-primary: #00f5c4; /* Neon Mint */
+  --dm-border: #30363d;
+  --dm-shadow: 0 0 15px rgba(0, 245, 196, 0.1);
+}
+
+
+/* 2. CRITICAL LAYOUT & LIBRARY STYLES (DO NOT REMOVE)
+--------------------------------------------------------------------------------*/
+.leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position: absolute; left: 0; top: 0; }
+.leaflet-container { overflow: hidden; width: 100%; height: 100%; background: #333; }
+.leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { user-select: none; }
+.leaflet-marker-icon, .leaflet-marker-shadow { display: block; }
+.leaflet-tile-pane { z-index: 200; } .leaflet-overlay-pane { z-index: 400; } .leaflet-shadow-pane { z-index: 500; } .leaflet-marker-pane { z-index: 600; } .leaflet-tooltip-pane { z-index: 650; } .leaflet-popup-pane { z-index: 700; cursor: auto; }
+.leaflet-control { position: relative; z-index: 800; pointer-events: auto; float: left; clear: both; }
+.leaflet-top { position: absolute; z-index: 1000; pointer-events: none; top: 0; } .leaflet-bottom { position: absolute; z-index: 1000; pointer-events: none; bottom: 0; } .leaflet-left { left: 0; } .leaflet-right { right: 0; }
+.leaflet-right .leaflet-control { float: right; } .leaflet-top .leaflet-control { margin-top: 10px; } .leaflet-bottom .leaflet-control { margin-bottom: 10px; } .leaflet-left .leaflet-control { margin-left: 10px; } .leaflet-right .leaflet-control { margin-right: 10px; }
+.leaflet-popup { position: absolute; text-align: center; margin-bottom: 20px; } .leaflet-popup-content-wrapper { padding: 1px; text-align: left; } .leaflet-popup-content { margin: 14px 20px; min-width: 200px; } .leaflet-popup-tip-container { width: 40px; height: 20px; position: absolute; left: 50%; margin-left: -20px; overflow: hidden; pointer-events: none; } .leaflet-popup-tip { width: 17px; height: 17px; padding: 1px; margin: -10px auto 0; transform: rotate(45deg); }
+.leaflet-container a.leaflet-popup-close-button { position: absolute; top: 5px; right: 5px; border: none; text-align: center; width: 24px; height: 24px; font: 18px/24px Arial, sans-serif; background: transparent; }
+
+
+/* 3. THEME STYLES (LIGHT MODE DEFAULT)
+--------------------------------------------------------------------------------*/
+body {
+  font-family: var(--font-body);
+  background-color: var(--lm-bg);
+  background-image: linear-gradient(var(--lm-border) 1px, transparent 1px), linear-gradient(90deg, var(--lm-border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  color: var(--lm-text-primary);
+}
+.main-panel, .page-body-wrapper, .navbar.default-layout { background: transparent !important; }
+.navbar.default-layout { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: rgba(244, 247, 249, 0.8) !important; border-bottom: 1px solid var(--lm-border); }
+
+.ui-aside, .card, #plannerMenu {
+  background: var(--lm-surface) !important;
+  color: var(--lm-text-primary) !important;
+  border: 1px solid var(--lm-border) !important;
+  box-shadow: var(--lm-shadow) !important;
+  border-radius: 8px !important;
+}
+.ui-aside { box-shadow: none !important; border-radius: 0 !important; }
+
+h1, h2, h3, h4, .page-title, .pra-title { font-family: var(--font-header) !important; color: var(--lm-text-primary) !important; text-transform: uppercase; }
+.pra-title { background: var(--lm-surface) !important; border-bottom: 1px solid var(--lm-border); }
+
+.form-control, .bootstrap-select > .dropdown-toggle {
+  border-radius: 4px !important;
+  border-color: var(--lm-border) !important;
+  background-color: var(--lm-bg) !important;
+}
+
+.btn { border-radius: 5px !important; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s ease; }
+.btn-primary { background: var(--lm-primary) !important; border-color: var(--lm-primary) !important; color: white !important; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); }
+
+/* Light Mode Map */
+.leaflet-tile-pane { filter: none; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--lm-surface); color: var(--lm-text-primary); }
+.leaflet-bar a { background: var(--lm-surface); border-color: var(--lm-border); color: var(--lm-text-primary); }
+.leaflet-bar a:hover { background: var(--lm-bg); }
+
+/* 4. DARK MODE STYLES
+--------------------------------------------------------------------------------*/
+body.dark-mode {
+  background-color: var(--dm-bg);
+  background-image: linear-gradient(rgba(0, 245, 196, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 245, 196, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  color: var(--dm-text-primary);
+}
+
+body.dark-mode .navbar.default-layout {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(13, 17, 23, 0.7) !important;
+  border-bottom: 1px solid var(--dm-border);
+}
+body.dark-mode .navbar-brand-wrapper { background: transparent !important; }
+
+body.dark-mode .ui-aside, body.dark-mode .card, body.dark-mode #plannerMenu {
+  background: rgba(31, 37, 55, 0.7) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--dm-text-primary) !important;
+  border: 1px solid var(--dm-border) !important;
+  box-shadow: var(--dm-shadow) !important;
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode .page-title, body.dark-mode .pra-title {
+  color: var(--dm-text-primary) !important;
+  text-shadow: 0 0 5px var(--dm-primary);
+}
+body.dark-mode .pra-title { background: transparent !important; border-bottom-color: var(--dm-border); }
+
+body.dark-mode .form-control, body.dark-mode .bootstrap-select > .dropdown-toggle {
+  background: var(--dm-bg) !important;
+  border-color: var(--dm-border) !important;
+  color: var(--dm-text-primary) !important;
+}
+body.dark-mode .form-control:focus { border-color: var(--dm-primary) !important; box-shadow: 0 0 10px rgba(56, 178, 172, 0.5) !important; }
+
+body.dark-mode .btn-primary {
+  background: transparent !important;
+  color: var(--dm-primary) !important;
+  border: 1px solid var(--dm-primary) !important;
+  box-shadow: 0 0 5px var(--dm-primary), 0 0 5px var(--dm-primary) inset;
+}
+body.dark-mode .btn-primary:hover {
+  background: var(--dm-primary) !important;
+  color: #131725 !important;
+  box-shadow: 0 0 15px var(--dm-primary), 0 0 10px var(--dm-primary) inset;
+  transform: translateY(-2px);
+}
+
+/* Dark Mode Map */
+body.dark-mode .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.8) contrast(1.1); }
+body.dark-mode .leaflet-popup-content-wrapper, body.dark-mode .leaflet-popup-tip { background: var(--dm-surface); color: var(--dm-text-primary); }
+body.dark-mode .leaflet-popup-content-wrapper .popup-header { background: var(--dm-primary) !important; }
+body.dark-mode .leaflet-popup-content-wrapper .popup-header .popup-header-title { color: #131725 !important; }
+body.dark-mode .leaflet-bar a { background-color: var(--dm-surface); border-color: var(--dm-border); color: var(--dm-text-primary); }
+body.dark-mode .leaflet-bar a:hover { background-color: var(--dm-bg); }
+
+
+/* 5. JOURNEY RESULTS & TRANSPORT LINE STYLING
+--------------------------------------------------------------------------------*/
+/* This section styles the route results with official line colors */
+#routeInfo .list-group-item {
+  border-left-width: 5px !important;
+  border-radius: 0 !important;
+  margin-bottom: 10px !important;
+  transition: all 0.2s ease;
+}
+#routeInfo .list-group-item:hover {
+  transform: translateX(5px);
+  box-shadow: var(--lm-shadow);
+}
+body.dark-mode #routeInfo .list-group-item:hover {
+  box-shadow: var(--dm-shadow);
+}
+
+/* Default/Walk */
+#routeInfo .mdi-walk:before { color: var(--line-walk) !important; }
+#routeInfo .list-group-item.walk { border-left-color: var(--line-walk) !important; }
+
+/* LRT - Kelana Jaya Line */
+#routeInfo .mdi-train[style*="d62a80"]:before { color: var(--line-lrt-kj) !important; } /* Guessing based on common hex codes for pink */
+#routeInfo .list-group-item.lrt-kj { border-left-color: var(--line-lrt-kj) !important; }
+
+/* LRT - Ampang Line */
+#routeInfo .mdi-train[style*="f39221"]:before { color: var(--line-lrt-ag) !important; }
+#routeInfo .list-group-item.lrt-ag { border-left-color: var(--line-lrt-ag) !important; }
+
+/* MRT - Kajang Line */
+#routeInfo .mdi-train[style*="009a44"]:before { color: var(--line-mrt-kg) !important; }
+#routeInfo .list-group-item.mrt-kg { border-left-color: var(--line-mrt-kg) !important; }
+
+/* KL Monorail */
+#routeInfo .mdi-train[style*="8dc63f"]:before { color: var(--line-mono-kl) !important; }
+#routeInfo .list-group-item.mono-kl { border-left-color: var(--line-mono-kl) !important; }
+
+/* BRT - Sunway Line */
+#routeInfo .mdi-bus[style*="0078be"]:before { color: var(--line-brt-sw) !important; }
+#routeInfo .list-group-item.brt-sw { border-left-color: var(--line-brt-sw) !important; }
+
+/* KTM Komuter */
+#routeInfo .mdi-train[style*="0033a1"]:before { color: var(--line-ktm) !important; }
+#routeInfo .list-group-item.ktm { border-left-color: var(--line-ktm) !important; }
+
+/* Fallback for any other train */
+#routeInfo .mdi-train:before { color: var(--lm-primary); }
+body.dark-mode #routeInfo .mdi-train:before { color: var(--dm-primary); }
+
+
+/* 6. THEME TOGGLE BUTTON
+--------------------------------------------------------------------------------*/
+#theme-toggle {
+  position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px;
+  border-radius: 50%; font-size: 24px; cursor: pointer; z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s ease;
+}
+#theme-toggle { border: 1px solid var(--lm-border); background-color: var(--lm-surface); color: var(--lm-text-primary); box-shadow: var(--lm-shadow); }
+#theme-toggle:hover { transform: scale(1.1) rotate(15deg); }
+body.dark-mode #theme-toggle { background-color: var(--dm-surface); border-color: var(--dm-border); color: var(--dm-text-primary); }
