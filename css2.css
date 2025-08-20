@@ -1,0 +1,536 @@
+/* ================================
+CSS2 — Components
+
+Buttons (primary, secondary, ghost)
+
+Inputs, selects, textareas
+
+Dropdowns (floating, fade/slide)
+
+Checkboxes & radios (custom)
+================================= */
+
+/* 0) Helpers */
+:root {
+--btn-radius: var(--radius-sm);
+--input-radius: var(--radius-sm);
+--control-height: 40px;
+--control-padding-x: 12px;
+--control-padding-y: 10px;
+
+--btn-shadow: 0 8px 18px rgba(var(--shadow-color), 0.14);
+--btn-shadow-hover: 0 10px 24px rgba(var(--shadow-color), 0.18);
+
+--glow-primary: 0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 70%);
+--glow-secondary: 0 0 0 3px color-mix(in oklab, var(--color-secondary), transparent 70%);
+}
+
+/* 1) Buttons */
+.button,
+.btn,
+button.btn,
+button.button {
+position: relative;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+height: var(--control-height);
+padding: 0 14px;
+border-radius: var(--btn-radius);
+border: 1px solid var(--border-color);
+background: var(--color-surface);
+color: var(--color-text);
+font-weight: var(--font-weight-medium);
+text-decoration: none;
+box-shadow: var(--shadow-xs);
+transition: transform var(--motion-fast) ease, box-shadow var(--motion-normal) ease, background var(--motion-normal) ease, border-color var(--motion-normal) ease, color var(--motion-normal) ease, opacity var(--motion-normal) ease;
+will-change: transform, box-shadow;
+cursor: pointer;
+user-select: none;
+}
+
+.button:hover,
+.btn:hover {
+transform: translateY(-1px);
+box-shadow: var(--btn-shadow);
+}
+
+.button:active,
+.btn:active {
+transform: translateY(0);
+box-shadow: var(--shadow-sm);
+}
+
+/* Primary */
+.btn-primary {
+background: linear-gradient(180deg, color-mix(in oklab, var(--color-primary), white 6%), var(--color-primary));
+color: var(--color-primary-contrast);
+border-color: color-mix(in oklab, var(--color-primary), black 10%);
+box-shadow: 0 6px 16px color-mix(in oklab, var(--color-primary), transparent 80%);
+}
+.btn-primary:hover {
+filter: brightness(1.05);
+box-shadow: var(--btn-shadow-hover), 0 0 0 2px color-mix(in oklab, var(--color-primary), transparent 75%);
+}
+.btn-primary:focus-visible { outline: 0; box-shadow: var(--btn-shadow), var(--glow-primary); }
+
+/* Secondary */
+.btn-secondary {
+background: linear-gradient(180deg, color-mix(in oklab, var(--color-secondary), white 6%), var(--color-secondary));
+color: var(--color-secondary-contrast);
+border-color: color-mix(in oklab, var(--color-secondary), black 10%);
+box-shadow: 0 6px 16px color-mix(in oklab, var(--color-secondary), transparent 80%);
+}
+.btn-secondary:hover {
+filter: brightness(1.06);
+box-shadow: var(--btn-shadow-hover), 0 0 0 2px color-mix(in oklab, var(--color-secondary), transparent 75%);
+}
+.btn-secondary:focus-visible { outline: 0; box-shadow: var(--btn-shadow), var(--glow-secondary); }
+
+/* Ghost (subtle) */
+.btn-ghost {
+background: transparent;
+color: var(--color-text);
+border-color: color-mix(in oklab, var(--border-color), var(--color-text) 10%);
+box-shadow: none;
+}
+.btn-ghost:hover {
+background: color-mix(in oklab, var(--color-surface), var(--color-text) 6%);
+box-shadow: var(--shadow-xs);
+}
+.btn-ghost:focus-visible { outline: 0; box-shadow: var(--glow-primary); }
+
+/* Sizes */
+.btn-sm { height: 34px; padding: 0 10px; border-radius: var(--radius-xs); font-size: var(--font-size-sm); }
+.btn-lg { height: 46px; padding: 0 18px; border-radius: var(--radius-md); font-size: var(--font-size-lg); }
+.btn-pill { border-radius: var(--radius-pill); }
+
+/* Icon buttons */
+.btn-icon { width: var(--control-height); padding: 0; }
+
+/* 2) Form controls: Inputs, selects, textareas */
+.input,
+select,
+textarea,
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"] {
+height: var(--control-height);
+padding: var(--control-padding-y) var(--control-padding-x);
+border-radius: var(--input-radius);
+border: 1px solid var(--border-color);
+background: var(--color-surface);
+color: var(--color-text);
+box-shadow: inset 0 1px 0 rgba(var(--shadow-color), 0.03);
+transition: border-color var(--motion-normal) ease, box-shadow var(--motion-normal) ease, background var(--motion-normal) ease, color var(--motion-normal) ease, transform var(--motion-fast) ease;
+}
+textarea { min-height: 96px; resize: vertical; }
+
+/* Focus glow */
+.input:focus,
+select:focus,
+textarea:focus,
+input[type="text"]:focus,
+input[type="search"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus {
+border-color: color-mix(in oklab, var(--color-primary), transparent 30%);
+box-shadow:
+0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 82%),
+0 8px 22px rgba(var(--shadow-color), 0.18);
+outline: none;
+transform: translateY(-1px);
+}
+
+/* Disabled/read-only */
+.input:disabled,
+select:disabled,
+textarea:disabled,
+input:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+background: color-mix(in oklab, var(--color-surface), var(--color-text) 4%);
+}
+
+/* Validation states */
+.is-valid,
+input:is(.is-valid, [aria-invalid="false"]),
+select:is(.is-valid, [aria-invalid="false"]),
+textarea:is(.is-valid, [aria-invalid="false"]) {
+border-color: color-mix(in oklab, var(--color-success), black 10%);
+}
+.is-invalid,
+input:is(.is-invalid, [aria-invalid="true"]),
+select:is(.is-invalid, [aria-invalid="true"]),
+textarea:is(.is-invalid, [aria-invalid="true"]) {
+border-color: color-mix(in oklab, var(--color-danger), black 10%);
+}
+
+/* Prefix/suffix input groups (non-invasive) */
+.input-group {
+display: flex;
+align-items: stretch;
+}
+.input-group > .input,
+.input-group > input,
+.input-group > select {
+border-radius: 0;
+}
+.input-group > :first-child { border-top-left-radius: var(--input-radius); border-bottom-left-radius: var(--input-radius); }
+.input-group > :last-child { border-top-right-radius: var(--input-radius); border-bottom-right-radius: var(--input-radius); }
+.input-addon {
+display: inline-flex;
+align-items: center;
+padding: 0 12px;
+background: var(--color-surface-2);
+color: var(--color-muted);
+border: 1px solid var(--border-color);
+border-left: 0;
+}
+
+/* Select custom arrow (non-destructive) */
+select {
+background-image:
+linear-gradient(45deg, transparent 50%, currentColor 50%),
+linear-gradient(135deg, currentColor 50%, transparent 50%),
+linear-gradient(to right, transparent, transparent);
+background-position:
+calc(100% - 18px) calc(50% - 3px),
+calc(100% - 13px) calc(50% - 3px),
+calc(100% - 2.2em) 0.5em;
+background-size: 6px 6px, 6px 6px, 1px 1.8em;
+background-repeat: no-repeat;
+padding-right: 34px;
+}
+
+/* 3) Dropdowns /
+.dropdown {
+position: relative;
+display: inline-block;
+}
+.dropdown-toggle {
+/ can use .btn variants */
+}
+.dropdown-menu {
+position: absolute;
+min-width: 200px;
+margin-top: 8px;
+inset-inline-start: 0;
+z-index: 1000;
+background: var(--color-surface);
+border: 1px solid var(--border-color);
+border-radius: var(--radius-md);
+box-shadow: var(--shadow-md);
+padding: 6px;
+opacity: 0;
+transform: translateY(-4px);
+pointer-events: none;
+transition: opacity var(--motion-normal) ease, transform var(--motion-normal) ease;
+}
+.dropdown-menu.end {
+inset-inline-start: auto;
+inset-inline-end: 0;
+}
+.dropdown.open .dropdown-menu,
+.dropdown[aria-expanded="true"] .dropdown-menu,
+.dropdown-toggle[aria-expanded="true"] + .dropdown-menu {
+opacity: 1;
+transform: translateY(0);
+pointer-events: auto;
+}
+.dropdown-item {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 10px 10px;
+border-radius: var(--radius-sm);
+color: var(--color-text);
+text-decoration: none;
+cursor: pointer;
+transition: background var(--motion-normal) ease, color var(--motion-normal) ease;
+}
+.dropdown-item:hover {
+background: color-mix(in oklab, var(--color-surface-2), var(--color-text) 6%);
+}
+.dropdown-divider {
+height: 1px;
+background: var(--divider);
+margin: 6px 4px;
+border-radius: 1px;
+}
+
+/* 4) Checkboxes & Radios (custom) */
+
+input[type="checkbox"],
+input[type="radio"] {
+/* visually hidden but accessible styles are out of scope to avoid breaking layout */
+accent-color: var(--color-primary);
+}
+
+/* Custom wrapper approach (non-destructive):
+<label class="control control-checkbox">
+<input type="checkbox">
+<span class="control-indicator"></span>
+Label text
+</label>
+/
+.control {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+cursor: pointer;
+user-select: none;
+}
+.control input {
+position: absolute;
+opacity: 0;
+pointer-events: none;
+}
+.control-indicator {
+width: 20px;
+height: 20px;
+border-radius: 6px; / rounded >= 8px feel */
+border: 1px solid var(--border-color);
+background: var(--color-surface);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+box-shadow: var(--shadow-xs) inset;
+transition: border-color var(--motion-normal) ease, background var(--motion-normal) ease, box-shadow var(--motion-normal) ease, transform var(--motion-fast) ease;
+}
+
+/* Checkbox tick */
+.control-checkbox .control-indicator::after {
+content: "";
+width: 10px;
+height: 6px;
+border: 2px solid var(--color-primary-contrast);
+border-top: 0;
+border-right: 0;
+transform: rotate(-45deg) scale(0.5);
+opacity: 0;
+transition: transform var(--motion-fast) ease, opacity var(--motion-fast) ease;
+}
+
+/* Radio circle */
+.control-radio .control-indicator {
+border-radius: 50%;
+}
+.control-radio .control-indicator::after {
+content: "";
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: var(--color-primary-contrast);
+transform: scale(0.4);
+opacity: 0;
+transition: transform var(--motion-fast) ease, opacity var(--motion-fast) ease;
+}
+
+/* Checked states */
+.control input:checked + .control-indicator {
+background: var(--color-primary);
+border-color: color-mix(in oklab, var(--color-primary), black 10%);
+box-shadow: 0 6px 16px color-mix(in oklab, var(--color-primary), transparent 80%);
+}
+.control.control-secondary input:checked + .control-indicator {
+background: var(--color-secondary);
+border-color: color-mix(in oklab, var(--color-secondary), black 10%);
+box-shadow: 0 6px 16px color-mix(in oklab, var(--color-secondary), transparent 80%);
+}
+
+/* Animate icons in */
+.control.control-checkbox input:checked + .control-indicator::after {
+transform: rotate(-45deg) scale(1);
+opacity: 1;
+}
+.control.control-radio input:checked + .control-indicator::after {
+transform: scale(1);
+opacity: 1;
+}
+
+/* Hover/active */
+.control:hover .control-indicator {
+transform: translateY(-1px);
+box-shadow: 0 6px 18px rgba(var(--shadow-color), 0.12), var(--shadow-xs) inset;
+}
+.control:active .control-indicator {
+transform: translateY(0);
+}
+
+/* Focus ring for custom controls */
+.control input:focus-visible + .control-indicator {
+outline: 0;
+box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 75%), var(--shadow-xs) inset;
+}
+
+/* 5) Ghost inputs (minimal style option) */
+.input-ghost,
+.input.input-ghost,
+input.input-ghost,
+textarea.input-ghost,
+select.input-ghost {
+background: transparent;
+border-color: color-mix(in oklab, var(--border-color), var(--color-text) 10%);
+box-shadow: none;
+}
+.input-ghost:focus,
+input.input-ghost:focus,
+textarea.input-ghost:focus,
+select.input-ghost:focus {
+box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 82%);
+}
+
+/* 6) Glassmorphism variant for panels/menus */
+.menu-glass,
+.dropdown-menu.glass {
+background: var(--glass-bg);
+border: var(--glass-border);
+backdrop-filter: var(--glass-blur);
+-webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* 7) State color utility buttons */
+.btn-success { background: var(--color-success); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-success), black 10%); }
+.btn-warning { background: var(--color-warning); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-warning), black 10%); }
+.btn-danger { background: var(--color-danger); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-danger), black 10%); }
+.btn-success:hover { filter: brightness(1.05); }
+.btn-warning:hover { filter: brightness(1.05); }
+.btn-danger:hover { filter: brightness(1.05); }
+
+/* 8) Cyberpunk theme extras */
+body[data-theme="cyberpunk"] .btn-primary {
+text-shadow: 0 0 6px color-mix(in oklab, var(--color-primary), transparent 35%);
+box-shadow:
+0 0 12px color-mix(in oklab, var(--color-primary), transparent 55%),
+0 6px 16px rgba(0,0,0,0.35);
+}
+body[data-theme="cyberpunk"] .btn-secondary {
+text-shadow: 0 0 6px color-mix(in oklab, var(--color-secondary), transparent 35%);
+box-shadow:
+0 0 12px color-mix(in oklab, var(--color-secondary), transparent 55%),
+0 6px 16px rgba(0,0,0,0.35);
+}
+body[data-theme="cyberpunk"] .dropdown-menu,
+body[data-theme="cyberpunk"] .input,
+body[data-theme="cyberpunk"] select,
+body[data-theme="cyberpunk"] textarea {
+box-shadow:
+0 0 12px color-mix(in oklab, var(--color-primary), transparent 70%),
+var(--shadow-sm);
+}
+
+/* 9) Accessibility & contrast nudges */
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-warning,
+.btn-danger {
+text-shadow: 0 1px 0 rgba(0,0,0,0.06);
+}
+
+/* 10) Edge cases: inline inside dense toolbars */
+.toolbar .btn,
+.toolbar .button {
+height: 36px;
+padding: 0 10px;
+border-radius: var(--radius-xs);
+}
+
+/* 11) Loading state for buttons (non-JS dependent) */
+.btn[aria-busy="true"],
+.button[aria-busy="true"] {
+position: relative;
+pointer-events: none;
+opacity: 0.8;
+}
+.btn[aria-busy="true"]::after,
+.button[aria-busy="true"]::after {
+content: "";
+width: 14px;
+height: 14px;
+border-radius: 50%;
+border: 2px solid currentColor;
+border-top-color: transparent;
+animation: spin var(--motion-slow) linear infinite;
+margin-inline-start: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 12) Floating label pattern (optional, non-breaking)
+Structure:
+<label class="floating">
+<input placeholder=" ">
+<span>Label</span>
+</label>
+*/
+label.floating {
+position: relative;
+display: block;
+}
+label.floating > input,
+label.floating > textarea,
+label.floating > select {
+width: 100%;
+padding-top: 18px;
+}
+label.floating > span {
+position: absolute;
+left: 12px; top: 8px;
+font-size: var(--font-size-sm);
+color: var(--color-muted);
+pointer-events: none;
+transition: transform var(--motion-normal) ease, color var(--motion-normal) ease, opacity var(--motion-normal) ease;
+transform-origin: left top;
+}
+label.floating > :is(input, textarea, select):focus + span,
+label.floating > :is(input, textarea, select):not(:placeholder-shown) + span {
+transform: translateY(-8px) scale(0.92);
+color: var(--color-primary);
+opacity: 0.9;
+}
+
+/* 13) Compact density variant */
+.density-compact .btn,
+.density-compact .button,
+.density-compact .input,
+.density-compact input,
+.density-compact select,
+.density-compact textarea {
+--control-height: 36px;
+--control-padding-y: 8px;
+--control-padding-x: 10px;
+}
+
+/* 14) Error/help text */
+.form-help {
+font-size: var(--font-size-sm);
+color: var(--color-muted);
+margin-top: 6px;
+}
+.form-error {
+font-size: var(--font-size-sm);
+color: var(--color-danger);
+margin-top: 6px;
+}
+
+/* 15) Grouped buttons /
+.btn-group {
+display: inline-flex;
+}
+.btn-group .btn {
+border-radius: 0;
+}
+.btn-group .btn:first-child { border-top-left-radius: var(--btn-radius); border-bottom-left-radius: var(--btn-radius); }
+.btn-group .btn:last-child { border-top-right-radius: var(--btn-radius); border-bottom-right-radius: var(--btn-radius); }
+.btn-group .btn + .btn { margin-left: -1px; } / Seamless borders */
+
+ 

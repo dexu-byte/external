@@ -1,0 +1,347 @@
+/* ================================
+CSS3 — Overlays, Modals, Tooltips,
+Animations & Utilities
+================================= */
+
+/* 0) Layering and common overlay tokens */
+:root {
+--z-overlay: 1000;
+--z-modal: 1100;
+--z-tooltip: 1200;
+
+--overlay-bg: rgba(0, 0, 0, 0.45);
+--overlay-blur: 6px;
+
+--modal-width-sm: 420px;
+--modal-width-md: 640px;
+--modal-width-lg: 920px;
+
+--tooltip-bg: color-mix(in oklab, var(--color-text), black 20%);
+--tooltip-fg: var(--color-text-inverse);
+
+--anim-fade: var(--motion-normal);
+--anim-slide: var(--motion-normal);
+--anim-scale: var(--motion-normal);
+}
+
+/* 1) Global overlay */
+.overlay,
+.dialog-backdrop,
+.modal-backdrop {
+position: fixed;
+inset: 0;
+z-index: var(--z-overlay);
+background: var(--overlay-bg);
+backdrop-filter: blur(var(--overlay-blur));
+-webkit-backdrop-filter: blur(var(--overlay-blur));
+opacity: 0;
+pointer-events: none;
+transition: opacity var(--anim-fade) ease;
+}
+.overlay.is-active,
+.dialog[open] + .overlay,
+.modal.is-open + .overlay,
+[data-overlay="active"] {
+opacity: 1;
+pointer-events: auto;
+}
+
+/* 2) Modal (flexible, non-invasive)
+Structure A (generic):
+
+<div class="modal is-open"> <div class="modal-dialog modal-md"> <div class="modal-header">...</div> <div class="modal-body">...</div> <div class="modal-footer">...</div> </div> </div> Structure B (native dialog with <dialog>): <dialog class="modal-dialog modal-md" open>...</dialog> */ .modal { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity var(--anim-fade) ease; } .modal.is-open { opacity: 1; pointer-events: auto; }
+.modal-dialog,
+dialog.modal-dialog {
+width: min(100%, var(--modal-width-md));
+max-height: calc(100dvh - 64px);
+display: flex;
+flex-direction: column;
+gap: 0;
+background: var(--color-surface);
+color: var(--color-text);
+border: 1px solid var(--border-color);
+border-radius: var(--radius-lg);
+box-shadow: var(--shadow-lg);
+transform: translateY(8px) scale(0.98);
+opacity: 0;
+transition: transform var(--anim-slide) ease, opacity var(--anim-fade) ease, box-shadow var(--anim-fade) ease;
+overflow: clip;
+}
+.modal.is-open .modal-dialog,
+dialog[open].modal-dialog {
+transform: translateY(0) scale(1);
+opacity: 1;
+}
+.modal-sm .modal-dialog { width: min(100%, var(--modal-width-sm)); }
+.modal-lg .modal-dialog { width: min(100%, var(--modal-width-lg)); }
+
+.modal-header,
+.modal-footer {
+padding: 16px 18px;
+background: color-mix(in oklab, var(--color-surface), var(--color-text) 2%);
+border-bottom: 1px solid var(--divider);
+}
+.modal-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+position: sticky;
+top: 0;
+z-index: 1;
+}
+.modal-title {
+margin: 0;
+font-size: var(--font-size-xl);
+font-weight: var(--font-weight-semibold);
+}
+.modal-close {
+appearance: none;
+border: 1px solid var(--border-color);
+background: var(--color-surface);
+color: var(--color-text);
+width: 36px; height: 36px;
+border-radius: var(--radius-sm);
+display: inline-grid; place-items: center;
+cursor: pointer;
+transition: filter var(--motion-normal) ease, transform var(--motion-fast) ease, box-shadow var(--motion-normal) ease;
+}
+.modal-close:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.modal-close:active { transform: translateY(0); }
+
+.modal-body {
+padding: 18px;
+overflow: auto;
+}
+
+/* Glassmorphism variant */
+.modal-glass .modal-dialog,
+dialog.modal-dialog.modal-glass {
+background: var(--glass-bg);
+border: var(--glass-border);
+backdrop-filter: var(--glass-blur);
+-webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* Status variants */
+.modal-success .modal-header { border-color: color-mix(in oklab, var(--color-success), transparent 70%); }
+.modal-warning .modal-header { border-color: color-mix(in oklab, var(--color-warning), transparent 70%); }
+.modal-danger .modal-header { border-color: color-mix(in oklab, var(--color-danger), transparent 70%); }
+
+/* Native <dialog> support */
+dialog.modal-dialog {
+border: 1px solid var(--border-color);
+padding: 0;
+}
+dialog::backdrop {
+background: var(--overlay-bg);
+backdrop-filter: blur(var(--overlay-blur));
+-webkit-backdrop-filter: blur(var(--overlay-blur));
+}
+
+/* 3) Tooltips
+Usage (attribute driven):
+<button data-tooltip="Tooltip text">Hover</button>
+/
+[data-tooltip] {
+position: relative;
+}
+[data-tooltip]::before,
+[data-tooltip]::after {
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+opacity: 0;
+pointer-events: none;
+transition: opacity var(--anim-fade) ease, transform var(--anim-fade) ease;
+}
+[data-tooltip]::before {
+content: attr(data-tooltip);
+bottom: calc(100% + 10px);
+background: var(--tooltip-bg);
+color: var(--tooltip-fg);
+font-size: var(--font-size-sm);
+padding: 8px 10px;
+border-radius: var(--radius-sm);
+white-space: nowrap;
+box-shadow: var(--shadow-sm);
+z-index: var(--z-tooltip);
+}
+[data-tooltip]::after {
+content: "";
+bottom: calc(100% + 4px);
+border: 6px solid transparent;
+border-top-color: var(--tooltip-bg);
+z-index: var(--z-tooltip);
+}
+/ Show on hover/focus */
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::before,
+[data-tooltip]:focus-visible::after {
+opacity: 1;
+transform: translate(-50%, -2px);
+}
+
+/* Tooltip positions */
+[data-tooltip-pos="right"]::before,
+[data-tooltip-pos="right"]::after,
+[data-tooltip-pos="left"]::before,
+[data-tooltip-pos="left"]::after,
+[data-tooltip-pos="bottom"]::before,
+[data-tooltip-pos="bottom"]::after {
+left: auto;
+}
+[data-tooltip-pos="right"]::before {
+left: calc(100% + 10px); top: 50%; transform: translateY(-50%);
+}
+[data-tooltip-pos="right"]::after {
+left: calc(100% + 4px); top: 50%; transform: translateY(-50%);
+border-color: transparent; border-left-color: var(--tooltip-bg);
+}
+[data-tooltip-pos="left"]::before {
+right: calc(100% + 10px); top: 50%; transform: translateY(-50%);
+}
+[data-tooltip-pos="left"]::after {
+right: calc(100% + 4px); top: 50%; transform: translateY(-50%);
+border-color: transparent; border-right-color: var(--tooltip-bg);
+}
+[data-tooltip-pos="bottom"]::before {
+top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
+}
+[data-tooltip-pos="bottom"]::after {
+top: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+border-color: transparent; border-bottom-color: var(--tooltip-bg);
+}
+
+/* 4) Micro-interaction animations (utility classes) */
+.fade-in { animation: fade-in var(--anim-fade) ease both; }
+.fade-out { animation: fade-out var(--anim-fade) ease both; }
+.slide-up { animation: slide-up var(--anim-slide) ease both; }
+.slide-down { animation: slide-down var(--anim-slide) ease both; }
+.scale-in { animation: scale-in var(--anim-scale) ease both; }
+.scale-out { animation: scale-out var(--anim-scale) ease both; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes slide-up {
+from { transform: translateY(10px); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+@keyframes slide-down {
+from { transform: translateY(-10px); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+@keyframes scale-in {
+from { transform: scale(.98); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+@keyframes scale-out {
+from { transform: scale(1); opacity: 1; }
+to { transform: scale(.98); opacity: 0; }
+}
+
+/* 5) Snackbars/Toasts (lightweight) */
+.toast {
+position: fixed;
+z-index: var(--z-tooltip);
+left: 50%;
+bottom: 18px;
+transform: translateX(-50%);
+display: grid;
+gap: 8px;
+max-width: min(92vw, 560px);
+}
+.toast .toast-item {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 12px 14px;
+border-radius: var(--radius-md);
+background: var(--color-surface);
+color: var(--color-text);
+border: 1px solid var(--border-color);
+box-shadow: var(--shadow-md);
+}
+.toast .toast-item.success { border-color: color-mix(in oklab, var(--color-success), transparent 70%); }
+.toast .toast-item.warning { border-color: color-mix(in oklab, var(--color-warning), transparent 70%); }
+.toast .toast-item.danger { border-color: color-mix(in oklab, var(--color-danger), transparent 70%); }
+
+/* 6) Focus visible polyfill-friendly helpers */
+.js-focus-visible :focus:not(.focus-visible) { outline: none; }
+.focus-ring { box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 75%) !important; }
+
+/* 7) Utilities */
+.backdrop-blur-sm { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.backdrop-blur-md { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.backdrop-blur-lg { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+
+.max-w-sm { max-width: 420px; }
+.max-w-md { max-width: 640px; }
+.max-w-lg { max-width: 920px; }
+
+.inset-0 { inset: 0; }
+.center-xy { display: grid; place-items: center; }
+
+.hidden { display: none !important; }
+
+/* 8) Theme-specific polish /
+/ Dark-green subtle gold glow on key surfaces */
+body[data-theme="dark-green"] .modal-dialog,
+body[data-theme="dark-green"] .toast .toast-item {
+box-shadow:
+0 0 0 1px rgba(237, 200, 75, 0.18),
+0 16px 40px rgba(0,0,0,0.5);
+}
+
+/* Full dark highlight accents */
+body[data-theme="dark"] .modal-dialog,
+body[data-theme="dark"] .toast .toast-item {
+box-shadow:
+0 0 0 1px rgba(59, 130, 246, 0.16),
+0 16px 40px rgba(0,0,0,0.6);
+}
+
+/* Cyberpunk neon glow */
+body[data-theme="cyberpunk"] .modal-dialog,
+body[data-theme="cyberpunk"] .toast .toast-item,
+body[data-theme="cyberpunk"] [data-tooltip]::before {
+box-shadow:
+0 0 16px color-mix(in oklab, var(--color-primary), transparent 60%),
+0 0 28px color-mix(in oklab, var(--color-secondary), transparent 70%),
+0 16px 40px rgba(0,0,0,0.65);
+}
+body[data-theme="cyberpunk"] .modal-header,
+body[data-theme="cyberpunk"] .modal-footer {
+background:
+radial-gradient(120% 120% at 0% 0%, color-mix(in oklab, var(--color-secondary), transparent 88%), transparent 50%),
+radial-gradient(120% 120% at 100% 0%, color-mix(in oklab, var(--color-primary), transparent 88%), transparent 50%),
+color-mix(in oklab, var(--color-surface), var(--color-text) 3%);
+}
+
+/* 9) Reduced motion consideration */
+@media (prefers-reduced-motion: reduce) {
+.overlay,
+.modal,
+.modal-dialog,
+[data-tooltip]::before,
+[data-tooltip]::after,
+.toast .toast-item {
+transition: none !important;
+animation: none !important;
+}
+}
+
+/* 10) High-contrast tweaks */
+@media (prefers-contrast: more) {
+:root {
+--overlay-bg: rgba(0,0,0,0.55);
+--overlay-blur: 0px;
+}
+.modal-dialog,
+.toast .toast-item {
+border-width: 2px;
+}
+[data-tooltip]::before { box-shadow: none; }
+}
+ 
