@@ -1,0 +1,172 @@
+/*
+================================================================================
+  GLASSMORPHISM UI THEME (with Dark/Light Mode & Map Fixes)
+  Designed for a "Full Replacement" worker setup.
+================================================================================
+*/
+
+/* 1. FONT IMPORTS & ROOT VARIABLES */
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
+
+:root {
+  --font-main: 'Poppins', sans-serif;
+
+  /* Light Mode Variables */
+  --lm-bg-url: url(https://images.unsplash.com/photo-1545128485-c400e7702796?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80);
+  --lm-surface-bg: rgba(255, 255, 255, 0.6);
+  --lm-text-primary: #1a202c;
+  --lm-text-secondary: #5a667d;
+  --lm-primary: #0052d4;
+  --lm-border: rgba(255, 255, 255, 0.8);
+  
+  /* Dark Mode Variables */
+  --dm-bg-url: url(https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80);
+  --dm-surface-bg: rgba(30, 30, 45, 0.6);
+  --dm-text-primary: #e2e8f0;
+  --dm-text-secondary: #a0aec0;
+  --dm-primary: #00f5c4; /* Neon Mint */
+  --dm-border: rgba(255, 255, 255, 0.1);
+}
+
+
+/* 2. CRITICAL MAP LAYOUT STYLES (DO NOT REMOVE) */
+/* These are required because the original leaflet.css was removed by the worker. */
+.leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position: absolute; left: 0; top: 0; }
+.leaflet-container { overflow: hidden; }
+.leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { user-select: none; }
+.leaflet-marker-icon, .leaflet-marker-shadow { display: block; }
+.leaflet-tile-pane { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane { z-index: 500; }
+.leaflet-marker-pane { z-index: 600; }
+.leaflet-tooltip-pane { z-index: 650; }
+.leaflet-popup-pane { z-index: 700; cursor: auto; }
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg { z-index: 200; }
+.leaflet-control { position: relative; z-index: 800; pointer-events: auto; float: left; clear: both; }
+.leaflet-top { position: absolute; z-index: 1000; pointer-events: none; top: 0; right: 0; left: 0; }
+.leaflet-bottom { position: absolute; z-index: 1000; pointer-events: none; bottom: 0; }
+.leaflet-left .leaflet-control { margin-left: 10px; }
+.leaflet-right .leaflet-control { margin-right: 10px; float: right; }
+.leaflet-top .leaflet-control { margin-top: 10px; }
+.leaflet-bottom .leaflet-control { margin-bottom: 10px; }
+.leaflet-popup { position: absolute; text-align: center; margin-bottom: 20px; }
+.leaflet-popup-content-wrapper { padding: 1px; text-align: left; border-radius: 8px; }
+.leaflet-popup-content { margin: 14px 20px; line-height: 1.4; min-width: 200px; }
+.leaflet-popup-tip-container { width: 40px; height: 20px; position: absolute; left: 50%; margin-left: -20px; overflow: hidden; pointer-events: none; }
+.leaflet-popup-tip { width: 17px; height: 17px; padding: 1px; margin: -10px auto 0; transform: rotate(45deg); }
+.leaflet-container a.leaflet-popup-close-button { position: absolute; top: 5px; right: 5px; border: none; text-align: center; width: 24px; height: 24px; font: 18px/24px Arial, sans-serif; text-decoration: none; background: transparent; }
+.leaflet-control-zoom-in, .leaflet-control-zoom-out { font: bold 18px 'Lucida Console', Monaco, monospace; text-indent: 1px; }
+
+/* 3. THEME STYLES */
+
+body {
+  font-family: var(--font-main);
+  background-image: var(--lm-bg-url);
+  background-size: cover;
+  background-attachment: fixed;
+  color: var(--lm-text-primary);
+  transition: background-image 0.5s ease;
+}
+
+/* Glassmorphism Surface Style */
+.ui-aside, .card, .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: var(--lm-surface-bg) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--lm-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important;
+  transition: background 0.3s ease, border 0.3s ease;
+}
+.main-panel, .page-body-wrapper, .navbar.default-layout, .navbar.default-layout .navbar-brand-wrapper {
+  background: transparent !important;
+}
+.navbar.default-layout { border-bottom: 1px solid var(--lm-border); }
+
+/* Typography */
+.page-title, h1, h2, h3, h4, .pra-title { color: var(--lm-text-primary) !important; }
+p, label, span, div, .dropdown-item, .form-control { color: var(--lm-text-secondary); }
+a { color: var(--lm-primary); }
+
+/* Forms & Buttons */
+.form-control, .bootstrap-select > .dropdown-toggle {
+  background: transparent !important;
+  border-color: rgba(120, 120, 120, 0.4) !important;
+  color: var(--lm-text-primary) !important;
+}
+.form-control:focus { box-shadow: 0 0 0 2px var(--lm-primary) !important; }
+
+.btn-primary { background-color: var(--lm-primary) !important; border-color: var(--lm-primary) !important; color: white !important; }
+.btn-secondary { background-color: transparent !important; border-color: var(--lm-text-secondary) !important; color: var(--lm-text-secondary) !important; }
+.btn { border-radius: 8px !important; }
+
+/* Map Light Mode */
+.leaflet-tile-pane { filter: saturate(0.9) brightness(1.05); transition: filter 0.5s ease; }
+.leaflet-popup-content-wrapper .popup-header { background: var(--lm-primary) !important; }
+.leaflet-popup-content-wrapper .popup-header .popup-header-title { color: white !important; }
+
+/* 4. DARK MODE STYLES */
+
+body.dark-mode {
+  background-image: var(--dm-bg-url);
+  color: var(--dm-text-primary);
+}
+body.dark-mode .ui-aside, body.dark-mode .card, body.dark-mode .leaflet-popup-content-wrapper, body.dark-mode .leaflet-popup-tip {
+  background: var(--dm-surface-bg) !important;
+  border-color: var(--dm-border) !important;
+}
+body.dark-mode .navbar.default-layout { border-bottom-color: var(--dm-border); }
+body.dark-mode .navbar-brand img { filter: brightness(10); }
+
+body.dark-mode .page-title, body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode .pra-title { color: var(--dm-text-primary) !important; }
+body.dark-mode p, body.dark-mode label, body.dark-mode span, body.dark-mode div, body.dark-mode .dropdown-item { color: var(--dm-text-secondary); }
+body.dark-mode a { color: var(--dm-primary); }
+
+body.dark-mode .form-control, body.dark-mode .bootstrap-select > .dropdown-toggle {
+  border-color: var(--dm-border) !important;
+  color: var(--dm-text-primary) !important;
+}
+body.dark-mode .form-control:focus { box-shadow: 0 0 0 2px var(--dm-primary) !important; }
+
+body.dark-mode .btn-primary { background-color: var(--dm-primary) !important; border-color: var(--dm-primary) !important; color: #1a202c !important; }
+body.dark-mode .btn-secondary { border-color: var(--dm-text-secondary) !important; color: var(--dm-text-secondary) !important; }
+
+/* Dark Mode Map Styles */
+body.dark-mode .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9); }
+body.dark-mode .leaflet-popup-content-wrapper { background: var(--dm-surface-bg); color: var(--dm-text-primary); }
+body.dark-mode .leaflet-popup-content-wrapper .popup-header { background: var(--dm-primary) !important; }
+body.dark-mode .leaflet-popup-content-wrapper .popup-header .popup-header-title { color: #1a202c !important; font-weight: bold; }
+body.dark-mode .leaflet-container a.leaflet-popup-close-button { color: var(--dm-text-primary) !important; }
+
+
+/* 5. THEME TOGGLE BUTTON */
+#theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+/* Light mode button */
+#theme-toggle {
+  border: 1px solid var(--lm-border);
+  background-color: var(--lm-surface-bg);
+  color: var(--lm-text-primary);
+  backdrop-filter: blur(5px);
+}
+#theme-toggle:hover { transform: scale(1.1) rotate(15deg); }
+/* Dark mode button */
+body.dark-mode #theme-toggle {
+  background-color: var(--dm-surface-bg);
+  border-color: var(--dm-border);
+  color: var(--dm-text-primary);
+}
