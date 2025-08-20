@@ -587,3 +587,197 @@ text-shadow: 0 1px 0 rgba(0,0,0,0.06);
 transition: none !important;
 }
 }
+
+
+
+/* === THEME FIX PATCH: App-specific selectors === /
+/ 1) Region tabs, filter chips, segmented controls */
+.nav-tabs .nav-link.active,
+.nav-pills .nav-link.active,
+.tab .active,
+.segmented .active,
+.btn-toggle.active,
+.badge.active,
+.chip.active,
+.pill.active,
+.btn-group .btn.active,
+button.active,
+a.active {
+background: var(--color-primary) !important;
+border-color: color-mix(in oklab, var(--color-primary), black 10%) !important;
+color: var(--on-primary) !important;
+box-shadow: 0 6px 16px color-mix(in oklab, var(--color-primary), transparent 80%) !important;
+}
+
+/* Buttons that look like tabs (e.g., "Shortest Time", "Mixed") */
+button[type="button"].active,
+.btn.active,
+.btn[aria-pressed="true"] {
+background: var(--color-primary) !important;
+color: var(--on-primary) !important;
+border-color: color-mix(in oklab, var(--color-primary), black 12%) !important;
+}
+
+/* Secondary/neutral tabs not active */
+.nav-tabs .nav-link,
+.nav-pills .nav-link,
+.segmented .btn,
+.chip,
+.pill {
+background: var(--color-surface);
+color: var(--color-text);
+border: 1px solid var(--border-color);
+}
+
+/* 2) Leaflet map controls (+/−) */
+.leaflet-control-zoom a,
+.leaflet-bar a {
+background: var(--color-surface) !important;
+color: var(--color-text) !important;
+border: 1px solid var(--border-color) !important;
+box-shadow: var(--shadow-sm) !important;
+}
+.leaflet-control-zoom a:hover,
+.leaflet-bar a:hover {
+background: color-mix(in oklab, var(--color-surface), var(--color-text) 6%) !important;
+}
+
+/* 3) Fare bars on detail page (Cash/Cashless/Adult/Concession) */
+.fare-bar,
+.fare .bar,
+.fares .bar,
+.fares .badge,
+.fare .badge {
+color: var(--color-text) !important;
+border-radius: var(--radius-sm) !important;
+border: 1px solid var(--border-color) !important;
+}
+
+/* Map each fare row to a tokenized color if classes exist */
+.fare .cash, .fares .cash, .fare-bar.cash { background: color-mix(in oklab, var(--color-secondary), var(--color-surface) 30%) !important; color: var(--color-text-inverse) !important; }
+.fare .cashless, .fares .cashless { background: color-mix(in oklab, var(--color-danger), var(--color-surface) 15%) !important; color: var(--on-danger) !important; }
+.fare .adult, .fares .adult { background: color-mix(in oklab, var(--color-warning), var(--color-surface) 10%) !important; color: var(--on-warning) !important; }
+.fare .concession, .fares .concession { background: color-mix(in oklab, var(--color-secondary), var(--color-surface) 20%) !important; color: var(--color-text-inverse) !important; }
+
+/* If they are simple stacked divs without classes, ensure dark text on bright, white text on dark by thresholding with mix /
+.fares .bar:not([class="cash"]):not([class*="adult"]):not([class*="concession"]):not([class*="cashless"]) {
+background: color-mix(in oklab, var(--color-surface-2), var(--color-text) 10%);
+color: var(--color-text);
+}
+
+/* 4) Time pills (“01:51 PM”, “02:26 PM”) and small badges */
+.badge.time,
+.time-pill,
+.pill.time,
+.badge,
+.label {
+background: var(--color-surface-2);
+border: 1px solid var(--border-color);
+color: var(--color-text);
+border-radius: var(--radius-sm);
+}
+.badge.time.is-primary,
+.time-pill.is-primary,
+.badge.is-primary {
+background: var(--color-primary);
+color: var(--on-primary);
+border-color: color-mix(in oklab, var(--color-primary), black 12%);
+}
+
+/* “Back to results” button */
+a.back,
+a.back-to-results,
+button.back,
+.btn-back {
+background: var(--color-secondary);
+color: var(--on-secondary);
+border: 1px solid color-mix(in oklab, var(--color-secondary), black 12%);
+}
+
+/* 5) SEARCH button final safeguard */
+.btn-success,
+button[type="submit"].btn-success,
+button[type="button"].btn-success {
+color: var(--on-success) !important;
+}
+
+/* 6) Result cards and steps (detail page) */
+.itinerary .step,
+.route-step,
+.timeline .step,
+.result-card,
+.card.result,
+.journey .card {
+background: var(--color-surface) !important;
+color: var(--color-text) !important;
+border: 1px solid var(--border-color) !important;
+border-radius: var(--radius-md) !important;
+box-shadow: var(--shadow-sm) !important;
+}
+.itinerary .step .meta,
+.result-card .meta,
+.route-step .meta,
+.journey .card .meta {
+color: var(--color-muted) !important;
+}
+
+/* 7) SVG icon fills inside themed buttons/badges */
+.btn svg, .badge svg, .chip svg, .pill svg {
+fill: currentColor !important;
+stroke: currentColor !important;
+}
+
+/* 8) Generic selected/active highlighting for list items */
+.list .item.active,
+.results .item.active,
+.search-results .item.active,
+.list .item[aria-selected="true"],
+.results .item[aria-selected="true"] {
+background: color-mix(in oklab, var(--color-primary), var(--color-surface) 80%) !important;
+border-color: color-mix(in oklab, var(--color-primary), black 10%) !important;
+color: var(--color-text) !important;
+}
+
+/* 9) Chips or small toggles that use .selected */
+.selected, .is-selected {
+background: var(--color-primary) !important;
+color: var(--on-primary) !important;
+border-color: color-mix(in oklab, var(--color-primary), black 12%) !important;
+}
+
+/* 10) Ensure any leftover anchor-as-button cases are readable */
+a.btn,
+a.button {
+color: inherit;
+}
+a.btn.btn-primary,
+a.btn.btn-secondary,
+a.btn.btn-success,
+a.btn.btn-warning,
+a.btn.btn-danger {
+color: currentColor;
+}
+body[data-theme] a.btn.btn-primary { color: var(--on-primary) !important; }
+body[data-theme] a.btn.btn-secondary { color: var(--on-secondary) !important; }
+body[data-theme] a.btn.btn-success { color: var(--on-success) !important; }
+body[data-theme] a.btn.btn-warning { color: var(--on-warning) !important; }
+body[data-theme] a.btn.btn-danger { color: var(--on-danger) !important; }
+
+/* 11) Make pill buttons and tab buttons the same height for visual consistency */
+.tab button, .chip, .pill { min-height: 36px; }
+
+/* 12) Increase specificity for any inline “btn-block” variants */
+.btn.btn-block, button.btn.btn-block { width: 100% !important; }
+
+/* 13) Hover elevation for key tappables */
+.nav-tabs .nav-link:hover,
+.nav-pills .nav-link:hover,
+.chip:hover, .pill:hover { box-shadow: var(--shadow-sm); }
+
+/* 14) Better visible focus on custom high-traffic controls */
+:where(.nav-tabs .nav-link, .nav-pills .nav-link, .chip, .pill, .leaflet-bar a):focus-visible {
+outline: 0;
+box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 75%) !important;
+}
+
+/* === End of patch === */
