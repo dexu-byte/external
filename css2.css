@@ -1,16 +1,3 @@
-/* ================================
-CSS2 — Components
-
-Buttons (primary, secondary, ghost)
-
-Inputs, selects, textareas
-
-Dropdowns (floating, fade/slide)
-
-Checkboxes & radios (custom)
-================================= */
-
-/* 0) Helpers */
 :root {
 --btn-radius: var(--radius-sm);
 --input-radius: var(--radius-sm);
@@ -23,9 +10,12 @@ Checkboxes & radios (custom)
 
 --glow-primary: 0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 70%);
 --glow-secondary: 0 0 0 3px color-mix(in oklab, var(--color-secondary), transparent 70%);
+
+--btn-hover-brighten: 1.06;
+--btn-active-brighten: 0.98;
 }
 
-/* 1) Buttons */
+/* 1) Buttons: base */
 .button,
 .btn,
 button.btn,
@@ -42,27 +32,26 @@ border: 1px solid var(--border-color);
 background: var(--color-surface);
 color: var(--color-text);
 font-weight: var(--font-weight-medium);
+letter-spacing: 0.01em;
 text-decoration: none;
 box-shadow: var(--shadow-xs);
-transition: transform var(--motion-fast) ease, box-shadow var(--motion-normal) ease, background var(--motion-normal) ease, border-color var(--motion-normal) ease, color var(--motion-normal) ease, opacity var(--motion-normal) ease;
+transition: transform var(--motion-fast) ease, box-shadow var(--motion-normal) ease, background var(--motion-normal) ease, border-color var(--motion-normal) ease, color var(--motion-normal) ease, opacity var(--motion-normal) ease, filter var(--motion-normal) ease;
 will-change: transform, box-shadow;
 cursor: pointer;
 user-select: none;
 }
-
 .button:hover,
 .btn:hover {
 transform: translateY(-1px);
 box-shadow: var(--btn-shadow);
 }
-
 .button:active,
 .btn:active {
 transform: translateY(0);
 box-shadow: var(--shadow-sm);
 }
 
-/* Primary */
+/* 1.1) Variants */
 .btn-primary {
 background: linear-gradient(180deg, color-mix(in oklab, var(--color-primary), white 6%), var(--color-primary));
 color: var(--color-primary-contrast);
@@ -70,12 +59,11 @@ border-color: color-mix(in oklab, var(--color-primary), black 10%);
 box-shadow: 0 6px 16px color-mix(in oklab, var(--color-primary), transparent 80%);
 }
 .btn-primary:hover {
-filter: brightness(1.05);
+filter: brightness(var(--btn-hover-brighten));
 box-shadow: var(--btn-shadow-hover), 0 0 0 2px color-mix(in oklab, var(--color-primary), transparent 75%);
 }
 .btn-primary:focus-visible { outline: 0; box-shadow: var(--btn-shadow), var(--glow-primary); }
 
-/* Secondary */
 .btn-secondary {
 background: linear-gradient(180deg, color-mix(in oklab, var(--color-secondary), white 6%), var(--color-secondary));
 color: var(--color-secondary-contrast);
@@ -83,7 +71,7 @@ border-color: color-mix(in oklab, var(--color-secondary), black 10%);
 box-shadow: 0 6px 16px color-mix(in oklab, var(--color-secondary), transparent 80%);
 }
 .btn-secondary:hover {
-filter: brightness(1.06);
+filter: brightness(var(--btn-hover-brighten));
 box-shadow: var(--btn-shadow-hover), 0 0 0 2px color-mix(in oklab, var(--color-secondary), transparent 75%);
 }
 .btn-secondary:focus-visible { outline: 0; box-shadow: var(--btn-shadow), var(--glow-secondary); }
@@ -108,6 +96,46 @@ box-shadow: var(--shadow-xs);
 
 /* Icon buttons */
 .btn-icon { width: var(--control-height); padding: 0; }
+
+/* 1.2) State color utility buttons */
+.btn-success { background: var(--color-success); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-success), black 10%); }
+.btn-warning { background: var(--color-warning); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-warning), black 10%); }
+.btn-danger { background: var(--color-danger); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-danger), black 10%); }
+.btn-success:hover,
+.btn-warning:hover,
+.btn-danger:hover { filter: brightness(var(--btn-hover-brighten)); }
+
+/* 1.3) Loading state */
+.btn[aria-busy="true"],
+.button[aria-busy="true"] {
+position: relative;
+pointer-events: none;
+opacity: 0.85;
+}
+.btn[aria-busy="true"]::after,
+.button[aria-busy="true"]::after {
+content: "";
+width: 14px;
+height: 14px;
+border-radius: 50%;
+border: 2px solid currentColor;
+border-top-color: transparent;
+animation: spin var(--motion-slow) linear infinite;
+margin-inline-start: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 1.4) Toolbar density */
+.toolbar .btn,
+.toolbar .button {
+height: 36px;
+padding: 0 10px;
+border-radius: var(--radius-xs);
+}
+
+/* Shared hover/active for all themes */
+.btn-primary:hover, .btn-secondary:hover { filter: brightness(var(--btn-hover-brighten)); }
+.btn-primary:active, .btn-secondary:active { filter: brightness(var(--btn-active-brighten)); }
 
 /* 2) Form controls: Inputs, selects, textareas */
 .input,
@@ -217,7 +245,7 @@ position: relative;
 display: inline-block;
 }
 .dropdown-toggle {
-/ can use .btn variants */
+/ uses .btn variants */
 }
 .dropdown-menu {
 position: absolute;
@@ -233,7 +261,7 @@ padding: 6px;
 opacity: 0;
 transform: translateY(-4px);
 pointer-events: none;
-transition: opacity var(--motion-normal) ease, transform var(--motion-normal) ease;
+transition: opacity var(--motion-normal) ease, transform var(--motion-normal) ease, backdrop-filter var(--motion-normal) ease;
 }
 .dropdown-menu.end {
 inset-inline-start: auto;
@@ -267,27 +295,32 @@ margin: 6px 4px;
 border-radius: 1px;
 }
 
-/* 4) Checkboxes & Radios (custom) */
-
-input[type="checkbox"],
-input[type="radio"] {
-/* visually hidden but accessible styles are out of scope to avoid breaking layout */
-accent-color: var(--color-primary);
+/* Glassmorphism variant for menus */
+.menu-glass,
+.dropdown-menu.glass {
+background: var(--glass-bg);
+border: var(--glass-border);
+backdrop-filter: var(--glass-blur);
+-webkit-backdrop-filter: var(--glass-blur);
 }
 
-/* Custom wrapper approach (non-destructive):
+/* 4) Checkboxes & Radios (custom wrapper pattern)
+
+Structure:
 <label class="control control-checkbox">
 <input type="checkbox">
 <span class="control-indicator"></span>
 Label text
 </label>
-/
+
+<label class="control control-radio"> <input type="radio" name="x"> <span class="control-indicator"></span> Label text </label> */ input[type="checkbox"], input[type="radio"] { /* Keep native for layout safety; enhance via wrappers */ accent-color: var(--color-primary); }
 .control {
 display: inline-flex;
 align-items: center;
 gap: 10px;
 cursor: pointer;
 user-select: none;
+position: relative;
 }
 .control input {
 position: absolute;
@@ -297,7 +330,7 @@ pointer-events: none;
 .control-indicator {
 width: 20px;
 height: 20px;
-border-radius: 6px; / rounded >= 8px feel */
+border-radius: 6px;
 border: 1px solid var(--border-color);
 background: var(--color-surface);
 display: inline-flex;
@@ -389,83 +422,7 @@ select.input-ghost:focus {
 box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 82%);
 }
 
-/* 6) Glassmorphism variant for panels/menus */
-.menu-glass,
-.dropdown-menu.glass {
-background: var(--glass-bg);
-border: var(--glass-border);
-backdrop-filter: var(--glass-blur);
--webkit-backdrop-filter: var(--glass-blur);
-}
-
-/* 7) State color utility buttons */
-.btn-success { background: var(--color-success); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-success), black 10%); }
-.btn-warning { background: var(--color-warning); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-warning), black 10%); }
-.btn-danger { background: var(--color-danger); color: var(--color-text-inverse); border-color: color-mix(in oklab, var(--color-danger), black 10%); }
-.btn-success:hover { filter: brightness(1.05); }
-.btn-warning:hover { filter: brightness(1.05); }
-.btn-danger:hover { filter: brightness(1.05); }
-
-/* 8) Cyberpunk theme extras */
-body[data-theme="cyberpunk"] .btn-primary {
-text-shadow: 0 0 6px color-mix(in oklab, var(--color-primary), transparent 35%);
-box-shadow:
-0 0 12px color-mix(in oklab, var(--color-primary), transparent 55%),
-0 6px 16px rgba(0,0,0,0.35);
-}
-body[data-theme="cyberpunk"] .btn-secondary {
-text-shadow: 0 0 6px color-mix(in oklab, var(--color-secondary), transparent 35%);
-box-shadow:
-0 0 12px color-mix(in oklab, var(--color-secondary), transparent 55%),
-0 6px 16px rgba(0,0,0,0.35);
-}
-body[data-theme="cyberpunk"] .dropdown-menu,
-body[data-theme="cyberpunk"] .input,
-body[data-theme="cyberpunk"] select,
-body[data-theme="cyberpunk"] textarea {
-box-shadow:
-0 0 12px color-mix(in oklab, var(--color-primary), transparent 70%),
-var(--shadow-sm);
-}
-
-/* 9) Accessibility & contrast nudges */
-.btn-primary,
-.btn-secondary,
-.btn-success,
-.btn-warning,
-.btn-danger {
-text-shadow: 0 1px 0 rgba(0,0,0,0.06);
-}
-
-/* 10) Edge cases: inline inside dense toolbars */
-.toolbar .btn,
-.toolbar .button {
-height: 36px;
-padding: 0 10px;
-border-radius: var(--radius-xs);
-}
-
-/* 11) Loading state for buttons (non-JS dependent) */
-.btn[aria-busy="true"],
-.button[aria-busy="true"] {
-position: relative;
-pointer-events: none;
-opacity: 0.8;
-}
-.btn[aria-busy="true"]::after,
-.button[aria-busy="true"]::after {
-content: "";
-width: 14px;
-height: 14px;
-border-radius: 50%;
-border: 2px solid currentColor;
-border-top-color: transparent;
-animation: spin var(--motion-slow) linear infinite;
-margin-inline-start: 8px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* 12) Floating label pattern (optional, non-breaking)
+/* 6) Floating label pattern (optional, non-breaking)
 Structure:
 <label class="floating">
 <input placeholder=" ">
@@ -498,7 +455,7 @@ color: var(--color-primary);
 opacity: 0.9;
 }
 
-/* 13) Compact density variant */
+/* 7) Compact density variant */
 .density-compact .btn,
 .density-compact .button,
 .density-compact .input,
@@ -510,7 +467,7 @@ opacity: 0.9;
 --control-padding-x: 10px;
 }
 
-/* 14) Error/help text */
+/* 8) Form helper text */
 .form-help {
 font-size: var(--font-size-sm);
 color: var(--color-muted);
@@ -522,7 +479,7 @@ color: var(--color-danger);
 margin-top: 6px;
 }
 
-/* 15) Grouped buttons /
+/* 9) Grouped buttons /
 .btn-group {
 display: inline-flex;
 }
@@ -533,4 +490,100 @@ border-radius: 0;
 .btn-group .btn:last-child { border-top-right-radius: var(--btn-radius); border-bottom-right-radius: var(--btn-radius); }
 .btn-group .btn + .btn { margin-left: -1px; } / Seamless borders */
 
- 
+/* 10) Cyberpunk extras and theme-specific button palettes */
+
+/* Cyberpunk neon glow treatment */
+body[data-theme="cyberpunk"] .btn-primary {
+background: linear-gradient(180deg, #ff4ddb, #ff2bd1);
+border-color: #e226b9;
+color: #040308;
+text-shadow: 0 0 6px rgba(255, 43, 209, .35);
+box-shadow:
+0 0 12px rgba(255, 43, 209, .45),
+0 6px 16px rgba(0,0,0,.35);
+}
+body[data-theme="cyberpunk"] .btn-secondary {
+background: linear-gradient(180deg, #9b72ff, #8b5cf6);
+border-color: #7a4ae6;
+color: #040308;
+text-shadow: 0 0 6px rgba(139, 92, 246, .35);
+box-shadow:
+0 0 12px rgba(139, 92, 246, .45),
+0 6px 16px rgba(0,0,0,.35);
+}
+body[data-theme="cyberpunk"] .dropdown-menu,
+body[data-theme="cyberpunk"] .input,
+body[data-theme="cyberpunk"] select,
+body[data-theme="cyberpunk"] textarea {
+box-shadow:
+0 0 12px color-mix(in oklab, var(--color-primary), transparent 70%),
+var(--shadow-sm);
+}
+
+/* Light theme friendly buttons */
+body[data-theme="light"] .btn-primary {
+background: linear-gradient(180deg, #2b6ae6, #2563eb);
+border-color: #1f55c9;
+color: #ffffff;
+}
+body[data-theme="light"] .btn-secondary {
+background: linear-gradient(180deg, #55627a, #475569);
+border-color: #3c485c;
+color: #ffffff;
+}
+
+/* Dark-green theme friendly buttons */
+body[data-theme="dark-green"] .btn-primary {
+background: linear-gradient(180deg, #f0d469, #edc84b);
+border-color: #d6b63e;
+color: #0a1912;
+}
+body[data-theme="dark-green"] .btn-secondary {
+background: linear-gradient(180deg, #34da8f, #2dcf85);
+border-color: #26b974;
+color: #0a1912;
+}
+
+/* Full dark theme friendly buttons /
+body[data-theme="dark"] .btn-primary {
+background: linear-gradient(180deg, #4a8cf8, #3b82f6);
+border-color: #2f6cd1;
+color: #0b0e14; / If you prefer white labels, switch to #ffffff /
+}
+body[data-theme="dark"] .btn-secondary {
+background: linear-gradient(180deg, #ffab2e, #f59e0b);
+border-color: #d88708;
+color: #0b0e14; / Consider #0b0e14 for AA contrast on warm accent */
+}
+
+/* Ghost buttons contrast bump on dark-ish themes */
+body[data-theme="dark"], body[data-theme="dark-green"], body[data-theme="cyberpunk"] {
+--ghost-bg: color-mix(in oklab, var(--color-surface), var(--color-text) 8%);
+--ghost-border: color-mix(in oklab, var(--border-color), var(--color-text) 15%);
+}
+.btn-ghost { background: transparent; border-color: var(--ghost-border); }
+.btn-ghost:hover { background: var(--ghost-bg); }
+
+/* 11) Accessibility & contrast nudges */
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-warning,
+.btn-danger {
+text-shadow: 0 1px 0 rgba(0,0,0,0.06);
+}
+
+/* 12) Mobile ergonomics */
+@media (pointer: coarse) {
+.btn, .button, .btn-sm { min-height: 44px; padding: 0 16px; }
+.dropdown-menu { min-width: max(56vw, 220px); }
+}
+
+/* 13) Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+.btn, .button,
+.input, input, select, textarea,
+.dropdown-menu, .dropdown-item {
+transition: none !important;
+}
+}
